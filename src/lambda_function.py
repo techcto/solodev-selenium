@@ -28,8 +28,7 @@ def lambda_handler(event, context):
         return
 
     for notification_type in notification_types:
-        print(notification_type)
-        if notification_type not in message:
+        if notification_type in message:
             continue
 
         print(event)
