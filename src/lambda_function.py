@@ -8,10 +8,10 @@ import login
 login = login.Login()
 
 def lambda_handler(event, context):
-
     print("Run App")
     print(event)
     print(context)
+    return True
 
 
 def dispatcher():
