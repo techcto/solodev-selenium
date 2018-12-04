@@ -43,7 +43,7 @@ def lambda_handler(event, context):
         sns_subject = "CloudFormation %s" % (notification_type)
         sns_message = message.replace(",", "\n")
 
-        if % (notification_type) == "CREATE_COMPLETE":
+        if notification_type == "CREATE_COMPLETE":
             dispatcher()
 
 
