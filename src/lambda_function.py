@@ -1,5 +1,4 @@
 import os,paramiko,time
-
 import login
 
 #Boot up tests
