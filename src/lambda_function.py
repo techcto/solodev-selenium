@@ -10,8 +10,6 @@ login = login.Login()
 def lambda_handler(event, context):
 
     print("Run App")
-    print(event)
-    print(context)
 
     # Notification types
     env_notification_types = os.getenv("NOTIFICATION_TYPES", None)
@@ -39,6 +37,9 @@ def lambda_handler(event, context):
     for notification_type in notification_types:
         if notification_type not in message:
             continue
+
+        print(event)
+        print(context)
 
         sns_subject = "CloudFormation %s" % (notification_type)
         sns_message = message.replace(",", "\n")
