@@ -21,6 +21,8 @@ def lambda_handler(event, context):
         print("Message could not be parsed. Event: %s" % (event))
         return
 
+    print(message)
+
     # Ignore resources that are not the CloudFormation stack itself
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
         return
