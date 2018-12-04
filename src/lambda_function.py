@@ -15,12 +15,6 @@ def lambda_handler(event, context):
         print("At least one CloudFormation notification type needs to be specified")
         return
 
-    # SNS topic ARN
-    sns_topic_arn = os.getenv("SNS_TOPIC_ARN", None)
-    if not sns_topic_arn:
-        print("The ARN of the SNS topic needs to be specified")
-        return
-
     try:
         message = str(event["Records"][0]["Sns"]["Message"]).replace("\n", ",")
     except Exception:
