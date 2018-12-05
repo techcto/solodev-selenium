@@ -28,20 +28,12 @@ def lambda_handler(event, context):
 
     print("Test type")
 
-    for notification_type in notification_types:
-        if notification_type in message:
-            print(event)
-            print(context)
-
-            sns_subject = "CloudFormation %s" % (notification_type)
-            sns_message = message.replace(",", "\n")
-
-            if notification_type == "CREATE_COMPLETE":
-                dispatcher()
-            else:
-                return True
-        else:
-            return True
+    if "ResourceStatus='CREATE_COMPLETE'" in message:
+        print(event)
+        print(context)
+        dispatcher()
+    else:
+        return True
 
 
 def dispatcher():
