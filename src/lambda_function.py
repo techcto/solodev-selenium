@@ -21,15 +21,7 @@ def lambda_handler(event, context):
         print("Scobot says: At least one CloudFormation notification type needs to be specified")
         return
     try:
-        message = event['Records'][0]['Sns']['Message']
-        
-        if isinstance(message, str):
-            try:
-                message = json.loads(message)
-            except Exception as e:
-                print(e)
-        elif isinstance(message, list):
-            message = json.loads(message[0])
+        message = event['Records'][0]['Sns']['Message'][0]
     except Exception:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
