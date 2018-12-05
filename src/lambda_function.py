@@ -1,5 +1,10 @@
-import os,paramiko,time
+import os,json,time
+import paramiko
+import boto3
 import login
+
+#Boot up AWS
+cloudformation = boto3.client('cloudformation')
 
 #Boot up tests
 login = login.Login()
@@ -31,6 +36,20 @@ def lambda_handler(event, context):
     if "ResourceStatus='CREATE_COMPLETE'" in message:
         print(event)
         print(context)
+
+        # Convert message to object
+        snsMessage=json.loads(message)
+        print(snsMessage)
+
+        stackId = snsMessage["StackId"]
+        physicalResourceId = snsMessage["PhysicalResourceId"]
+        print(stackId)
+        print(physicalResourceId)
+
+        if stackId == physicalResourceId:
+            stackResponse = cloudformation.describe_stacks(StackName=stackId)
+            print(stackResponse)
+
         dispatcher()
     else:
         return True
