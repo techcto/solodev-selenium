@@ -29,17 +29,21 @@ def lambda_handler(event, context):
     print("Test type")
 
     for notification_type in notification_types:
-        if notification_type not in message:
-            continue
+        if notification_type in message:
+            print(event)
+            print(context)
 
-        print(event)
-        print(context)
+            sns_subject = "CloudFormation %s" % (notification_type)
+            sns_message = message.replace(",", "\n")
 
-        sns_subject = "CloudFormation %s" % (notification_type)
-        sns_message = message.replace(",", "\n")
-
-        if notification_type == "CREATE_COMPLETE":
-            dispatcher()
+            if notification_type == "CREATE_COMPLETE":
+                dispatcher()
+            else:
+                echo "Wrong Type!"
+            return True
+        else:
+            echo "Ignore!"
+            return True
 
 
 def dispatcher():
