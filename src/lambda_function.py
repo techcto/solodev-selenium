@@ -22,14 +22,14 @@ def lambda_handler(event, context):
 
     try:
         message = event['Records'][0]['Sns']['Message']
+        
         if isinstance(message, str):
             try:
-                message = json.loads(message.replace('\"', '"'))
-                print(message.__class__.__name__)
+                message = json.loads(message)
             except Exception as e:
                 print(e)
         elif isinstance(message, list):
-            message = message[0]
+            message = json.loads(message[0])
     except Exception:
         print("Message could not be parsed. Event: %s" % (event))
         return
