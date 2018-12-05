@@ -9,6 +9,7 @@ cloudformation = boto3.client('cloudformation')
 #Boot up tests
 login = login.Login()
 
+#Activate Scobot
 def lambda_handler(event, context):
 
     print("Run App")
