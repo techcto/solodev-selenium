@@ -37,8 +37,14 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        # Convert message to object
-        snsMessage=json.loads(event["Records"][0]["Sns"]["Message"])
+        if isinstance(message, str):
+            try:
+                snsMessage = json.loads(message)
+            except Exception as e:
+                print(e)
+        elif isinstance(message, list):
+            snsMessage = message[0]
+
         print(snsMessage)
 
         stackId = snsMessage["StackId"]
