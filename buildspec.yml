@@ -18,6 +18,7 @@ phases:
       - aws configure set aws_session_token `./jq -r '.Token' aws_credentials.json`
       - ls -al
       - chmod 700 *.sh
+      - ./clean.sh
       - ./package.sh
   post_build:
     commands:
