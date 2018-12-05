@@ -16,7 +16,7 @@ class Login():
         }
 
         driver = webdriver.Remote(
-            command_executor='http://shawnmoore:kiFAPEEoRi7DoeZpRbrZ@hub.browserstack.com:80/wd/hub',
+            command_executor= os.getenv("COMMAND_EXECUTOR"),
             desired_capabilities=desired_cap)
 
         driver.get("http://54.157.157.208/")
