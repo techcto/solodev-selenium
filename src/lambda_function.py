@@ -21,7 +21,7 @@ def lambda_handler(event, context):
         print("Scobot says: At least one CloudFormation notification type needs to be specified")
         return
     try:
-        message = json.loads(str(event['Records'][0]['Sns']['Message'][0]))
+        message = json.loads(str(event['Records'][0]['Sns']['Message']))
     except Exception:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
@@ -46,9 +46,11 @@ def lambda_handler(event, context):
 
         dispatcher()
     else:
+        print("Scobot says: Bye-Bye!")
         return True
 
 
 def dispatcher():
     login.test()
+    print("Scobot says: My work is done here.")
     return True
