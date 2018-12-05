@@ -39,9 +39,8 @@ def lambda_handler(event, context):
             if notification_type == "CREATE_COMPLETE":
                 dispatcher()
             else:
-                echo "Wrong Type!"
+                return True
         else:
-            echo "Ignore!"
             return True
 
 
