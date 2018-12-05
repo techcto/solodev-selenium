@@ -24,7 +24,8 @@ def lambda_handler(event, context):
         message = event['Records'][0]['Sns']['Message']
         if isinstance(message, str):
             try:
-                message = json.loads(message)
+                message = json.loads(message.replace('\"', '"'))
+                print(message.__class__.__name__)
             except Exception as e:
                 print(e)
         elif isinstance(message, list):
@@ -44,7 +45,7 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        stackId = message["StackId"]
+        stackName = message["StackName"]
         physicalResourceId = message["PhysicalResourceId"]
         print(stackId)
         print(physicalResourceId)
