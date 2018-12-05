@@ -21,7 +21,14 @@ def lambda_handler(event, context):
         return
 
     try:
-        message = str(event["Records"][0]["Sns"]["Message"]).replace("\n", ",")
+        message = event['Records'][0]['Sns']['Message']
+        if isinstance(message, str):
+            try:
+                message = json.loads(message)
+            except Exception as e:
+                print(e)
+        elif isinstance(message, list):
+            message = message[0]
     except Exception:
         print("Message could not be parsed. Event: %s" % (event))
         return
@@ -37,11 +44,8 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        snsMessage = message[0]
-        print(snsMessage)
-
-        stackId = snsMessage["StackId"]
-        physicalResourceId = snsMessage["PhysicalResourceId"]
+        stackId = message["StackId"]
+        physicalResourceId = message["PhysicalResourceId"]
         print(stackId)
         print(physicalResourceId)
 
