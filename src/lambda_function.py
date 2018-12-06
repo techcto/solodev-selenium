@@ -1,6 +1,4 @@
 import os,json,time
-from collections import namedtuple
-import paramiko
 import boto3
 import login
 
@@ -13,7 +11,7 @@ login = login.Login()
 #Activate Scobot
 def lambda_handler(event, context):
 
-    print("Hello.  I am Scobot.")
+    print("Hello.  I am Scobot. 1.1")
 
     # Notification types
     env_notification_types = os.getenv("NOTIFICATION_TYPES", None)
