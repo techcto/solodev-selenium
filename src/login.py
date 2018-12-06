@@ -4,11 +4,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class Login():
-    def __init__(self,url):
+    def __init__(self):
         self.driver = webdriver
-        self.url = url
     
-    def test(self):
+    def test(self, url):
         desired_cap = {
         'browser': 'Chrome',
         'browser_version': '70.0',
@@ -21,7 +20,7 @@ class Login():
             command_executor= os.getenv("COMMAND_EXECUTOR"),
             desired_capabilities=desired_cap)
 
-        driver.get(self.url)
+        driver.get(url)
         if not "Solodev" in driver.title:
             raise Exception("Unable to load Solodev!")
 

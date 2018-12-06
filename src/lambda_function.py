@@ -11,7 +11,7 @@ login = login.Login()
 #Activate Scobot
 def lambda_handler(event, context):
 
-    print("Hello.  I am Scobot. 1.1")
+    print("Hello.  I am Scobot. 1.3")
 
     # Notification types
     env_notification_types = os.getenv("NOTIFICATION_TYPES", None)
@@ -30,6 +30,7 @@ def lambda_handler(event, context):
 
     if "ResourceStatus='CREATE_COMPLETE'" in message:
         print(message)
+        print("Wow, that is a lot of data")
 
         i = message.index("StackId='") + len("StackId='")
         j = message.index("'", i)
@@ -44,7 +45,9 @@ def lambda_handler(event, context):
             key = _to_env(o['OutputKey'])
             out[key] = o['OutputValue']
         print(json.dumps(out, indent=2))
+        print("Oops, sorry about that, I wanted to check the vars real quick")
 
+        print("Scobot says: Dispatching URL to Selenium Tests")
         dispatcher(out['SolodevIP'])
     else:
         return True
@@ -52,6 +55,7 @@ def lambda_handler(event, context):
 
 def dispatcher(url):
     login.test(url)
+    print("That does it. See you next time.")
     return True
 
 
