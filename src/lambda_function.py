@@ -25,6 +25,12 @@ def lambda_handler(event, context):
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
 
+    #Check SNS Status from Cloudformation Stack
+    i = message.index("ResourceStatus='") + len("ResourceStatus='")
+    j = message.index("'", i)
+    resourceStatus = message[i:j]
+    print("Scobot says: Cloudformation Status: ", resourceStatus)
+
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
         return
 
