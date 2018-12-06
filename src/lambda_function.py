@@ -34,21 +34,12 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        parsed_message = json.loads(message)
-        print(parsed_message)
-
-        # var i = SnsMessage.indexOf("StackId='") + ("StackId='").length;
-		# var j = SnsMessage.indexOf("'", i);
-		# var StackId = SnsMessage.substring(i, j); //Get the Stack ID
-
-        stackId = parsed_message['StackId']
-        physicalResourceId = parsed_message['PhysicalResourceId']
-        print(stackId)
-        print(physicalResourceId)
-
-        if stackId == physicalResourceId:
-            stackResponse = cloudformation.describe_stacks(StackName=stackId)
-            print(stackResponse)
+        i = message.index("StackId='", 10) + len("StackId='")
+        j = message.index("'", i)
+        stackId = message[i:j]
+        
+        stackResponse = cloudformation.describe_stacks(StackName=stackId)
+        print(stackResponse)
 
         dispatcher()
     else:
