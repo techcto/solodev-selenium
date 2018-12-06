@@ -25,27 +25,36 @@ def lambda_handler(event, context):
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
 
-    print(message)
-
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
         return
 
     if "ResourceStatus='CREATE_COMPLETE'" in message:
-        print(event)
-        print(context)
+        print(message)
 
         i = message.index("StackId='") + len("StackId='")
         j = message.index("'", i)
         stackId = message[i:j]
         
         stackResponse = cloudformation.describe_stacks(StackName=stackId)
-        print(stackResponse)
+        stack, = stackResponse['Stacks']
+        outputs = stack['Outputs']
 
-        dispatcher()
+        out = {}
+        for o in outputs:
+            key = _to_env(o['OutputKey'])
+            out[key] = o['OutputValue']
+        print(json.dumps(out, indent=2))
+
+        dispatcher(out['SolodevIP'])
     else:
         return True
 
 
-def dispatcher():
-    login.test()
+def dispatcher(url):
+    login.test(url)
     return True
+
+
+def _to_env(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).upper()

@@ -1,10 +1,12 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class Login():
-    def __init__(self):
+    def __init__(self,url):
         self.driver = webdriver
+        self.url = url
     
     def test(self):
         desired_cap = {
@@ -19,7 +21,7 @@ class Login():
             command_executor= os.getenv("COMMAND_EXECUTOR"),
             desired_capabilities=desired_cap)
 
-        driver.get("http://54.157.157.208/")
+        driver.get(self.url)
         if not "Solodev" in driver.title:
             raise Exception("Unable to load Solodev!")
 
