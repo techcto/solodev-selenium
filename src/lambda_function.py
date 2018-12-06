@@ -9,6 +9,9 @@ cloudformation = boto3.client('cloudformation')
 #Boot up tests
 login = login.Login()
 
+def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
+def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
+
 #Activate Scobot
 def lambda_handler(event, context):
 
@@ -21,7 +24,7 @@ def lambda_handler(event, context):
         print("Scobot says: At least one CloudFormation notification type needs to be specified")
         return
     try:
-        message = json.loads(event['Records'][0]['Sns']['Message'][0])
+        message = json2obj(event['Records'][0]['Sns']['Message'][0])
     except Exception:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
