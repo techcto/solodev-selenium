@@ -1,4 +1,4 @@
-import os,json,time
+import os,json,re,time
 import boto3
 import login
 
@@ -20,7 +20,7 @@ def lambda_handler(event, context):
         print("Scobot says: At least one CloudFormation notification type needs to be specified")
         return
     try:
-        message = json.loads(event['Records'][0]['Sns']['Message'])
+        message = event['Records'][0]['Sns']['Message']
     except Exception:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
@@ -34,8 +34,15 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        stackId = message['StackId']
-        physicalResourceId = message['PhysicalResourceId']
+        parsed_message = json.loads(message)
+        print(parsed_message)
+
+        # var i = SnsMessage.indexOf("StackId='") + ("StackId='").length;
+		# var j = SnsMessage.indexOf("'", i);
+		# var StackId = SnsMessage.substring(i, j); //Get the Stack ID
+
+        stackId = parsed_message['StackId']
+        physicalResourceId = parsed_message['PhysicalResourceId']
         print(stackId)
         print(physicalResourceId)
 
