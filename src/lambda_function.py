@@ -34,7 +34,7 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        i = message.index("StackId='", 10) + len("StackId='")
+        i = message.index("StackId='") + len("StackId='")
         j = message.index("'", i)
         stackId = message[i:j]
         
