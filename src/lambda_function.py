@@ -36,7 +36,7 @@ def lambda_handler(event, context):
         print(event)
         print(context)
 
-        stackName = message['StackName']
+        stackId = message['StackId']
         physicalResourceId = message['PhysicalResourceId']
         print(stackId)
         print(physicalResourceId)
