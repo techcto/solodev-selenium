@@ -30,7 +30,7 @@ class Login():
         mail.send_keys("solodev")
         password.send_keys("password")
         driver.find_element_by_xpath("//button[@type='submit']").click()
-		driver.find_element_by_xpath("(.//*[normalize-space(text()) and normalize-space(.)='Welcome to Solodev!'])[1]/following::div[1]").click()
+        driver.find_element_by_xpath("(.//*[normalize-space(text()) and normalize-space(.)='Welcome to Solodev!'])[1]/following::div[1]").click()
         driver.find_element_by_id("name").click()
         driver.find_element_by_id("name").clear()
         driver.find_element_by_id("name").send_keys("www.testwebsite.com")
