@@ -30,7 +30,7 @@ def lambda_handler(event, context):
 
     if "ResourceStatus='CREATE_COMPLETE'" in message:
         print(message)
-        print("Wow, that is a lot of data")
+        print("Scobot says: Wow, that is a lot of data")
 
         i = message.index("StackId='") + len("StackId='")
         j = message.index("'", i)
@@ -45,17 +45,18 @@ def lambda_handler(event, context):
             key = _to_env(o['OutputKey'])
             out[key] = o['OutputValue']
         print(json.dumps(out, indent=2))
-        print("Oops, sorry about that, I wanted to check the vars real quick")
+        print("Scobot says: Wow, nice output")
 
         print("Scobot says: Dispatching URL to Selenium Tests")
-        dispatcher(out['SolodevIP'])
+        dispatcher(out['SOLODEV_IP'])
     else:
+        print("Scobot Out.")
         return True
 
 
 def dispatcher(url):
     login.test(url)
-    print("That does it. See you next time.")
+    print("Scobot says: That does it. See you next time.")
     return True
 
 
