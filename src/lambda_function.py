@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         # message=json.loads(event['Records'][0]['Sns']['Message'])
         sns_handler(message)
     except BaseException as event:
-        print("Scobot says: Message could not be parsed. Event: %s" % (event))
+        print("Scobot says: Message could not be parsed. Event: %s" % str(event))
         return
 
 def cloudformation_handler(stackId):
