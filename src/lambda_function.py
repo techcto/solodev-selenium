@@ -24,11 +24,19 @@ def lambda_handler(event, context):
     #Test Message Type
     try:
         print("Test if this was called from SQS or SNS message")
-        message = event['Records'][0]['Sns']['Message']
-        # message=json.loads(event['Records'][0]['Sns']['Message'])
-        sns_handler(message)
-    except BaseException as event:
-        print("Scobot says: Message could not be parsed. Event: %s" % str(event))
+        print(str(event))
+        try:
+            print("Test for SQS event")
+            message=json.loads(event['Records'][0]['body']['Message'])
+            sqs_handler(message)
+            print("This is a SQS message")           
+        except BaseException as e:
+            print("This is a SNS message")
+            print(str(e))
+            message = event['Records'][0]['Sns']['Message']
+            sns_handler(message)
+    except BaseException as e:
+        print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
 
 def cloudformation_handler(stackId):
@@ -46,22 +54,22 @@ def cloudformation_handler(stackId):
     print("Scobot says: Dispatching URL to Selenium Tests")
     dispatcher(out['SOLODEV_IP'])
 
-# def asg_handler(message):
-#     #Check Status from Cloudformation Stack
-#     resourceStatus = message['ResourceStatus']
-#     print("Scobot says: Cloudformation Status: ", resourceStatus)
+def sqs_handler(message):
+    #Check Status from Cloudformation Stack
+    resourceStatus = message['ResourceStatus']
+    print("Scobot says: Cloudformation Status: ", resourceStatus)
 
-#     if message['ResourceType'] != 'AWS::CloudFormation::Stack':
-#         return
+    if message['ResourceType'] != 'AWS::CloudFormation::Stack':
+        return
 
-#     if message['ResourceStatus'] == 'CREATE_COMPLETE':
-#         print(message)
-#         print("Scobot says: Wow, that is a lot of data")
-#         stackId = message['StackId']
-#         cloudformation_handler(stackId)
-#     else:
-#         print("Scobot Out.")
-#         return True
+    if message['ResourceStatus'] == 'CREATE_COMPLETE':
+        print(message)
+        print("Scobot says: Wow, that is a lot of data")
+        stackId = message['StackId']
+        cloudformation_handler(stackId)
+    else:
+        print("Scobot Out.")
+        return True
 
 def sns_handler(message):
     #Check SNS Status from Cloudformation Stack
