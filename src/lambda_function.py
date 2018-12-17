@@ -33,6 +33,7 @@ def lambda_handler(event, context):
             print("This is a SNS message")
             message = event['Records'][0]['Sns']['Message']
             print(str(message))
+            print(str(e))
     except BaseException as e:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
