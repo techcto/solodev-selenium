@@ -23,11 +23,11 @@ def lambda_handler(event, context):
     
     #Test Message Type
     try:
-        print("Test if this was called from an ASG lifecycle event or SNS message")
-        print(event['Records'][0]['Sns']['TopicArn'])
+        print("Test if this was called from SQS or SNS message")
         message=json.loads(event['Records'][0]['Sns']['Message'])
         try:
             print("Test for SQS event")
+            print(message['StackId'])
             sqs_handler(message)
             print("This is a SQS message")           
         except BaseException as e:
