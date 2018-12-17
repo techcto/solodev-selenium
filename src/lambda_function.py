@@ -12,6 +12,7 @@ login = login.Login()
 def lambda_handler(event, context):
 
     print("Hello.  I am Scobot. 1.3")
+    # print(message['Event'])
 
     # Notification types
     env_notification_types = os.getenv("NOTIFICATION_TYPES", None)
@@ -19,12 +20,58 @@ def lambda_handler(event, context):
     if not notification_types:
         print("Scobot says: At least one CloudFormation notification type needs to be specified")
         return
+    
+    #Test Message Type
     try:
-        message = event['Records'][0]['Sns']['Message']
-    except Exception:
+        print("Test if this was called from an ASG lifecycle event or SNS message")
+        print(event['Records'][0]['Sns']['TopicArn'])
+        message=json.loads(event['Records'][0]['Sns']['Message'])
+        try:
+            print("Test for SQS event")
+            sqs_handler(message)
+            print("This is a SQS message")           
+        except BaseException as e:
+            print("This is a SNS message")
+            print(str(e))
+            message = event['Records'][0]['Sns']['Message']
+            sns_handler(message)
+    except BaseException as e:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
 
+def cloudformation_handler(stackId):
+    stackResponse = cloudformation.describe_stacks(StackName=stackId)
+    stack = stackResponse['Stacks']
+    outputs = stack['Outputs']
+
+    out = {}
+    for o in outputs:
+        key = _to_env(o['OutputKey'])
+        out[key] = o['OutputValue']
+    print(json.dumps(out, indent=2))
+    print("Scobot says: Wow, nice output")
+
+    print("Scobot says: Dispatching URL to Selenium Tests")
+    dispatcher(out['SOLODEV_IP'])
+
+def sqs_handler(message):
+    #Check Status from Cloudformation Stack
+    resourceStatus = message['ResourceStatus']
+    print("Scobot says: Cloudformation Status: ", resourceStatus)
+
+    if message['ResourceType'] != 'AWS::CloudFormation::Stack':
+        return
+
+    if message['ResourceStatus'] == 'CREATE_COMPLETE':
+        print(message)
+        print("Scobot says: Wow, that is a lot of data")
+        stackId = message['StackId']
+        cloudformation_handler(stackId)
+    else:
+        print("Scobot Out.")
+        return True
+
+def sns_handler(message):
     #Check SNS Status from Cloudformation Stack
     i = message.index("ResourceStatus='") + len("ResourceStatus='")
     j = message.index("'", i)
@@ -42,19 +89,7 @@ def lambda_handler(event, context):
         j = message.index("'", i)
         stackId = message[i:j]
         
-        stackResponse = cloudformation.describe_stacks(StackName=stackId)
-        stack, = stackResponse['Stacks']
-        outputs = stack['Outputs']
-
-        out = {}
-        for o in outputs:
-            key = _to_env(o['OutputKey'])
-            out[key] = o['OutputValue']
-        print(json.dumps(out, indent=2))
-        print("Scobot says: Wow, nice output")
-
-        print("Scobot says: Dispatching URL to Selenium Tests")
-        dispatcher(out['SOLODEV_IP'])
+        cloudformation_handler(stackId)
     else:
         print("Scobot Out.")
         return True
