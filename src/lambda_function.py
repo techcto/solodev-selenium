@@ -25,21 +25,21 @@ def lambda_handler(event, context):
     try:
         print("Test if this was called from SQS or SNS message")
         try:
-            print("Test for SQS event")
             message=json.loads(event['Records'][0]['body'])
             print(str(message))
             message = message['Message']
             print("This is a SQS message")           
         except BaseException as e:
-            print("This is a SNS message")
             message = event['Records'][0]['Sns']['Message']
+            print("This is a SNS message")
             print(str(message))
             print(str(e))
     except BaseException as e:
         print("Scobot says: Message could not be parsed. Event: %s" % (event))
         return
 
-    sns_handler(message)
+    message_handler(message)
+
 
 def cloudformation_handler(stackId):
     stackResponse = cloudformation.describe_stacks(StackName=stackId)
@@ -57,24 +57,8 @@ def cloudformation_handler(stackId):
     print("Scobot says: Dispatching URL to Selenium Tests")
     dispatcher(out['SOLODEV_IP'])
 
-# def sqs_handler(message):
-#     #Check Status from Cloudformation Stack
-#     resourceStatus = message['ResourceStatus']
-#     print("Scobot says: Cloudformation Status: ", resourceStatus)
 
-#     if message['ResourceType'] != 'AWS::CloudFormation::Stack':
-#         return
-
-#     if message['ResourceStatus'] == 'CREATE_COMPLETE':
-#         print(message)
-#         print("Scobot says: Wow, that is a lot of data")
-#         stackId = message['StackId']
-#         cloudformation_handler(stackId)
-#     else:
-#         print("Scobot Out.")
-#         return True
-
-def sns_handler(message):
+def message_handler(message):
     #Check SNS Status from Cloudformation Stack
     i = message.index("ResourceStatus='") + len("ResourceStatus='")
     j = message.index("'", i)
@@ -82,6 +66,7 @@ def sns_handler(message):
     print("Scobot says: Cloudformation Status: ", resourceStatus)
 
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
+        print("Scobot says: These are not the codes we are looking for")
         return
 
     if "ResourceStatus='CREATE_COMPLETE'" in message:
@@ -95,7 +80,7 @@ def sns_handler(message):
         print("Hmm, it looks like the stack id is: ", stackId)
         cloudformation_handler(stackId)
     else:
-        print("Scobot Out.")
+        print("Scobot says: Let's wait a bit more for this resource")
         return True
 
 
