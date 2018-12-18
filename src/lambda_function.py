@@ -56,7 +56,7 @@ def cloudformation_handler(stackId):
     print("Scobot says: Wow, nice output")
     print("Scobot says: Dispatching URL to Selenium Tests")
 
-    dispatcher(out['AdminUrl'], out['AdminUsername'], out['AdminPassword'])
+    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'])
 
     return True
 
