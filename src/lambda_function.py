@@ -39,6 +39,7 @@ def lambda_handler(event, context):
         return
 
     message_handler(message)
+    return True
 
 
 def cloudformation_handler(stackId):
@@ -53,7 +54,6 @@ def cloudformation_handler(stackId):
         out[key] = o['OutputValue']
     print(json.dumps(out, indent=2))
     print("Scobot says: Wow, nice output")
-
     print("Scobot says: Dispatching URL to Selenium Tests")
 
     if out['SOLODEV_IP']:
@@ -66,6 +66,8 @@ def cloudformation_handler(stackId):
         dispatcher(out['CNAMEURL'])
     else:
         dispatcher(out['AdminUrl'])
+
+    return True
 
 
 def message_handler(message):
@@ -89,6 +91,7 @@ def message_handler(message):
         
         print("Hmm, it looks like the stack id is: ", stackId)
         cloudformation_handler(stackId)
+        return True
     else:
         print("Scobot says: Let's wait a bit more for this resource")
         return True
