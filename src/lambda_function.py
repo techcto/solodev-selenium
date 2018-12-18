@@ -92,7 +92,7 @@ def sns_handler(message):
         j = message.index("'", i)
         stackId = message[i:j]
         
-        print("Hmm, it looks like the stack id is: "stackId)
+        print("Hmm, it looks like the stack id is: ", stackId)
         cloudformation_handler(stackId)
     else:
         print("Scobot Out.")
