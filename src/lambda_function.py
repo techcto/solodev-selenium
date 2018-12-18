@@ -72,6 +72,10 @@ def message_handler(message):
         print("Scobot says: These are not the codes we are looking for")
         return True
 
+    if "StackStatus': 'CREATE_IN_PROGRESS" not in message:
+        print("Scobot says: These are not the codes we are looking for")
+        return True
+
     if "ResourceStatus='CREATE_COMPLETE'" in message:
         print(message)
         print("Scobot says: Wow, that is a lot of data")
