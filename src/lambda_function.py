@@ -72,7 +72,7 @@ def message_handler(message):
         print("Scobot says: These are not the codes we are looking for")
         return True
 
-    if "StackStatus': 'CREATE_IN_PROGRESS" not in message:
+    if "StackStatus': 'CREATE_IN_PROGRESS" in message:
         print("Scobot says: These are not the codes we are looking for")
         return True
 
