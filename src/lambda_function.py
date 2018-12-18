@@ -79,7 +79,7 @@ def message_handler(message):
 
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
         print("Scobot says: These are not the codes we are looking for")
-        return
+        return True
 
     if "ResourceStatus='CREATE_COMPLETE'" in message:
         print(message)
