@@ -98,8 +98,13 @@ def message_handler(message):
 
 
 def dispatcher(url):
-    login.test(url)
-    print("Scobot says: That does it. See you next time.")
+    try:
+        login.test(url)
+        print("Scobot says: That does it. See you next time.")
+    except BaseException as e:
+        print(str(e))
+        print("Oh no, the test failed.  Please alert the team.")
+        
     return True
 
 
