@@ -23,7 +23,7 @@ def lambda_handler(event, context):
     
     #Test Message Type
     try:
-        print("Test if this was called from SQS or SNS message")
+        print("Test if this was called from SQS or SNS message!")
         try:
             message=json.loads(event['Records'][0]['body'])
             print(str(message))
