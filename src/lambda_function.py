@@ -44,7 +44,7 @@ def lambda_handler(event, context):
 def cloudformation_handler(stackId):
     stackResponse = cloudformation.describe_stacks(StackName=stackId)
     print(str(stackResponse))
-    stack = stackResponse['Stacks']
+    stack, = stackResponse['Stacks']
     outputs = stack['Outputs']
 
     out = {}
