@@ -25,10 +25,10 @@ class Login():
             raise Exception("Unable to load Solodev!")
 
         #Login
-        mail = driver.find_element_by_name("email")
-        password = driver.find_element_by_name("password")
-        mail.send_keys(username)
-        password.send_keys(password)
+        mailField = driver.find_element_by_name("email")
+        passwordField = driver.find_element_by_name("password")
+        mailField.send_keys(username)
+        passwordField.send_keys(password)
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath("(.//*[normalize-space(text()) and normalize-space(.)='Welcome to Solodev!'])[1]/following::div[1]").click()
         driver.find_element_by_id("name").click()
