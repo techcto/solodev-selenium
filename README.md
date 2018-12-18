@@ -5,7 +5,7 @@ Experiement project for running tests on cloudformation templates using:
 Python (selenium) Lambda Chromium Automation (naming pending)
 
 PyChromeless allows to automate actions to any webpage from AWS Lambda. The aim of this project is to provide
- the scaffolding for future robot implementations.
+ the scaffolding for future robot implementations...
 
 ## But... how?
 
