@@ -88,9 +88,9 @@ def message_handler(message):
         return True
 
 
-def dispatcher(url):
+def dispatcher(url, username, password):
     try:
-        login.test(url)
+        login.test(url, username, password)
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
