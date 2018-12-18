@@ -56,16 +56,7 @@ def cloudformation_handler(stackId):
     print("Scobot says: Wow, nice output")
     print("Scobot says: Dispatching URL to Selenium Tests")
 
-    if out['SOLODEV_IP']:
-        dispatcher(out['SOLODEV_IP'])
-    elif out['SolodevURL']:
-        dispatcher(out['SolodevURL'])
-    elif out['URL']:
-        dispatcher(out['URL'])
-    elif out['CNAMEURL']:
-        dispatcher(out['CNAMEURL'])
-    else:
-        dispatcher(out['AdminUrl'])
+    dispatcher(out['AdminUrl'], out['AdminUsername'], out['AdminPassword'])
 
     return True
 
