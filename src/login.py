@@ -7,7 +7,7 @@ class Login():
     def __init__(self):
         self.driver = webdriver
     
-    def test(self, url):
+    def test(self, url, username, password):
         desired_cap = {
         'browser': 'Chrome',
         'browser_version': '70.0',
@@ -25,10 +25,10 @@ class Login():
             raise Exception("Unable to load Solodev!")
 
         #Login
-        mail = driver.find_element_by_name("mail")
-        password = driver.find_element_by_name("solodevpassword")
-        mail.send_keys("solodev")
-        password.send_keys("password")
+        mail = driver.find_element_by_name("email")
+        password = driver.find_element_by_name("password")
+        mail.send_keys(username)
+        password.send_keys(password)
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath("(.//*[normalize-space(text()) and normalize-space(.)='Welcome to Solodev!'])[1]/following::div[1]").click()
         driver.find_element_by_id("name").click()
