@@ -11,7 +11,7 @@ login = login.Login()
 #Activate Scobot
 def lambda_handler(event, context):
 
-    print("Hello.  I am Scobot. 1.3")
+    print("Hello.  I am Scobot. 1.6")
     # print(message['Event'])
 
     # Notification types
@@ -55,7 +55,17 @@ def cloudformation_handler(stackId):
     print("Scobot says: Wow, nice output")
 
     print("Scobot says: Dispatching URL to Selenium Tests")
-    dispatcher(out['SOLODEV_IP'])
+
+    if out['SOLODEV_IP']:
+        dispatcher(out['SOLODEV_IP'])
+    elif out['SolodevURL']:
+        dispatcher(out['SolodevURL'])
+    elif out['URL']:
+        dispatcher(out['URL'])
+    elif out['CNAMEURL']:
+        dispatcher(out['CNAMEURL'])
+    else:
+        dispatcher(out['AdminUrl'])
 
 
 def message_handler(message):
