@@ -43,6 +43,7 @@ def lambda_handler(event, context):
 
 def cloudformation_handler(stackId):
     stackResponse = cloudformation.describe_stacks(StackName=stackId)
+    print(str(stackResponse))
     stack = stackResponse['Stacks']
     outputs = stack['Outputs']
 
@@ -91,6 +92,7 @@ def sns_handler(message):
         j = message.index("'", i)
         stackId = message[i:j]
         
+        print("Hmm, it looks like the stack id is: "stackId)
         cloudformation_handler(stackId)
     else:
         print("Scobot Out.")
