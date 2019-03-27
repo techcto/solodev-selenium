@@ -43,12 +43,13 @@ def lambda_handler(event, context):
 
 
 def cloudformation_handler(stackId):
-    LITE_URL = os.environ['LITE_URL']
-    PRO_URL = os.environ['PRO_URL']
-    PRO_BYOL_URL = os.environ['PRO_BYOL_URL']
-    ENTERPRISE_URL = os.environ['ENTERPRISE_URL']
-    ENTERPRISE_BYOL_URL = os.environ['ENTERPRISE_BYOL_URL']
-    DOCKER_URL = os.environ['DOCKER_URL']
+    LITE_URL = "testinglite.solodev.net"
+    # LITE_URL = os.environ['LITE_URL']
+    # PRO_URL = os.environ['PRO_URL']
+    # PRO_BYOL_URL = os.environ['PRO_BYOL_URL']
+    # ENTERPRISE_URL = os.environ['ENTERPRISE_URL']
+    # NTERPRISE_BYOL_URL = os.environ['ENTERPRISE_BYOL_URL']
+    # DOCKER_URL = os.environ['DOCKER_URL']
 
     stackResponse = cloudformation.describe_stacks(StackName=stackId)
     print(str(stackResponse))
@@ -66,15 +67,15 @@ def cloudformation_handler(stackId):
     # Lite
     dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], LITE_URL)
     # Pro
-    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], PRO_URL)
+    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], PRO_URL)
     # Pro BYOL
-    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], PRO_BYOL_URL)
+    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], PRO_BYOL_URL)
     # Enterprise
-    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], ENTERPRISE_URL)
+    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], ENTERPRISE_URL)
     # Enterprise BYOL
-    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], ENTERPRISE_BYOL_URL)
+    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], ENTERPRISE_BYOL_URL)
     # Docker
-    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], DOCKER_URL)
+    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], DOCKER_URL)
 
     return True
 
