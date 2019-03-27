@@ -1,4 +1,5 @@
 import unittest
+import os
 from values import strings
 from pageobjects.login_page import LoginPage
 from pageobjects.home_page import HomePage
@@ -10,7 +11,15 @@ from selenium import webdriver
 
 class AddLunarTemplate(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        desired_cap = {
+            'browser': 'Chrome',
+            'browser_version': '73.0',
+            'os': 'Windows',
+            'os_version': '10',
+        }
+        self.driver = webdriver.Remote(
+            command_executor=os.getenv("COMMAND_EXECUTOR"),
+            desired_capabilities=desired_cap)
         self.driver.maximize_window()
 
     def test_add_lunar(self, url=strings.localhost_solodev_url,
