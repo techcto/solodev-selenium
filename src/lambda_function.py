@@ -1,5 +1,6 @@
 import os, json, re
 import boto3
+import unittest
 from src.testcases import test_add_lunar
 
 # Boot up AWS
@@ -113,7 +114,9 @@ def message_handler(message):
 
 def dispatcher(url, username, password, new_url):
     try:
-        add_lunar.test_add_lunar(url, username, password, new_url)
+        # add_lunar.test_add_lunar(url, username, password, new_url)
+        unittest.TextTestRunner().run(
+            unittest.TestLoader().loadTestsFromTestCase(test_add_lunar))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
