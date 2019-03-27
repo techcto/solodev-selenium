@@ -1,5 +1,6 @@
 import unittest
 import os
+import time
 from values import strings
 from pageobjects.login_page import LoginPage
 from pageobjects.home_page import HomePage
@@ -31,6 +32,7 @@ class AddLunarTemplate(unittest.TestCase):
         websites_page = WebsitePage(self.driver)
         manage_website_page = ManageWebsitePage(self.driver)
 
+        time.sleep(5)
         self.driver.get(url)
 
         if "Solodev" not in self.driver.title:
