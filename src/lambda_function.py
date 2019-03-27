@@ -7,7 +7,7 @@ from src.testcases import test_add_lunar
 cloudformation = boto3.client('cloudformation')
 
 # Boot up tests
-add_lunar = test_add_lunar.AddLunarTemplate()
+add_lunar_template = test_add_lunar.AddLunarTemplate()
 
 
 # Activate Scobot
@@ -116,7 +116,8 @@ def dispatcher(url, username, password, new_url):
     try:
         # add_lunar.test_add_lunar(url, username, password, new_url)
         unittest.TextTestRunner().run(
-            unittest.TestLoader().loadTestsFromTestCase(test_add_lunar))
+            unittest.TestLoader().loadTestsFromTestCase(
+                add_lunar_template.test_add_lunar(url, username, password, new_url)))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))

@@ -18,6 +18,9 @@ class AddLunarTemplate(unittest.TestCase):
             'os': 'Windows',
             'os_version': '10',
         }
+        # self.driver = webdriver.Chrome()
+        # self.driver.maximize_window()
+
         self.driver = webdriver.Remote(
             command_executor=os.getenv("COMMAND_EXECUTOR"),
             desired_capabilities=desired_cap)
