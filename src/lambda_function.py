@@ -1,6 +1,6 @@
-import os, json, re, time
+import os, json, re
 import boto3
-from testcases import test_add_lunar
+from src.testcases import test_add_lunar
 
 # Boot up AWS
 cloudformation = boto3.client('cloudformation')

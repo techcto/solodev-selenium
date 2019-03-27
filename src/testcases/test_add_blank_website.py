@@ -1,30 +1,20 @@
 import unittest
-import os
-import time
-from values import strings
-from pageobjects.login_page import LoginPage
-from pageobjects.home_page import HomePage
-from pageobjects.websites_page import WebsitePage
-from pageobjects.manage_website_page import ManageWebsitePage
-from helpers.utilities import Utilities
+from src.values import strings
+from src.pageobjects.login_page import LoginPage
+from src.pageobjects.home_page import HomePage
+from src.pageobjects.websites_page import WebsitePage
+from src.pageobjects.manage_website_page import ManageWebsitePage
+from src.helpers.utilities import Utilities
 from selenium import webdriver
 
 
-class AddLunarTemplate(unittest.TestCase):
+class AddBlankWebsite(unittest.TestCase):
     def setUp(self):
-        desired_cap = {
-            'browser': 'Chrome',
-            'browser_version': '73.0',
-            'os': 'Windows',
-            'os_version': '10',
-        }
-        self.driver = webdriver.Remote(
-            command_executor=os.getenv("COMMAND_EXECUTOR"),
-            desired_capabilities=desired_cap)
+        self.driver = webdriver.Chrome()
         self.driver.maximize_window()
 
-    def test_add_lunar(self, url=strings.localhost_solodev_url,
-                      username=strings.username, password=strings.password, new_page_url=strings.sanity_page_url):
+    def test_add_blank_website(self, url=strings.localhost_solodev_url,
+                               username=strings.username, password=strings.password, new_page_url=strings.sanity_page_url):
         # Define webdriver wait and first page
         utilities = Utilities(self.driver)
         login_page = LoginPage(self.driver)
@@ -32,7 +22,6 @@ class AddLunarTemplate(unittest.TestCase):
         websites_page = WebsitePage(self.driver)
         manage_website_page = ManageWebsitePage(self.driver)
 
-        time.sleep(5)
         self.driver.get(url)
 
         if "Solodev" not in self.driver.title:
@@ -49,14 +38,12 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.type_website_url(new_page_url)
         manage_website_page.click_next()
 
-        manage_website_page.click_lunar_xp()
+        manage_website_page.click_blank_website()
         manage_website_page.click_next()
 
         utilities.wait_for_page_complete(30)
-
-        manage_website_page.click_next()
-
-        utilities.wait_for_page_complete(120)
+        #manage_website_page.click_next()
+        #utilities.wait_for_page_complete(120)
 
         home_page = HomePage(self.driver)
         home_page.click_websites()

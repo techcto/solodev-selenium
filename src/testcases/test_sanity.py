@@ -1,11 +1,11 @@
 import unittest
 import time
-from values import strings
-from pageobjects.login_page import LoginPage
-from pageobjects.home_page import HomePage
-from pageobjects.websites_page import WebsitePage
-from pageobjects.manage_website_page import ManageWebsitePage
-from helpers.utilities import Utilities
+from src.values import strings
+from src.pageobjects.login_page import LoginPage
+from src.pageobjects.home_page import HomePage
+from src.pageobjects.websites_page import WebsitePage
+from src.pageobjects.manage_website_page import ManageWebsitePage
+from src.helpers.utilities import Utilities
 from selenium import webdriver
 
 

@@ -1,7 +1,7 @@
 import unittest
-from values import strings
-from pageobjects.login_page import LoginPage
-from pageobjects.home_page import HomePage
+from src.values import strings
+from src.pageobjects.login_page import LoginPage
+from src.pageobjects.home_page import HomePage
 from selenium import webdriver
 
 
