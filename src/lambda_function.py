@@ -4,7 +4,9 @@ import unittest
 from src.testcases import test_add_lunar
 
 # Boot up AWS
-cloudformation = boto3.client('cloudformation')
+access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+cloudformation = boto3.client('cloudformation', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)
 
 # Boot up tests
 add_lunar_template = test_add_lunar.AddLunarTemplate()
