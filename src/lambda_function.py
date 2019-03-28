@@ -116,7 +116,7 @@ def dispatcher(url, username, password, new_url):
     try:
         # add_lunar.test_add_lunar(url, username, password, new_url)
         unittest.TextTestRunner().run(
-            unittest.TestLoader().loadTestsFromTestCase(add_lunar_template))
+            unittest.TestLoader().loadTestsFromTestCase(add_lunar_template(url, username, password, new_url)))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
