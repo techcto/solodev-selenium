@@ -1,12 +1,10 @@
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 class BasePage(object):
 
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
-
 
 class HomePage(BasePage):
 
@@ -81,4 +79,3 @@ class HomePage(BasePage):
     # Managers
     def click_a_manager(self):
         self.driver.find_element_by_css_selector().click()
-

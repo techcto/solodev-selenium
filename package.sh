@@ -9,4 +9,4 @@ echo $(aws s3 cp s3://build-secure/params/solodev-lite-single.json - ) > solodev
 aws cloudformation create-stack --disable-rollback --stack-name lite-selenium-${DATE} --disable-rollback --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameters file://solodev-lite-single.json \
     --template-url https://s3.amazonaws.com/solodev-aws-ha/aws/solodev-lite-linux.yaml \
-    --notification-arns "arn:aws:sns:us-east-1:893612263489:solodevSelenium"
+    --notification-arns ${NOTIFICATION_ARN}

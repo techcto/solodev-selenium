@@ -9,7 +9,6 @@ cloudformation = boto3.client('cloudformation')
 # Boot up tests
 add_lunar_template = test_add_lunar.AddLunarTemplate()
 
-
 # Activate Scobot
 def lambda_handler(event, context):
     print("Hello.  I am Scobot. 1.6")
@@ -44,14 +43,6 @@ def lambda_handler(event, context):
 
 
 def cloudformation_handler(stackId):
-    LITE_URL = "testinglite.solodev.net"
-    # LITE_URL = os.environ['LITE_URL']
-    # PRO_URL = os.environ['PRO_URL']
-    # PRO_BYOL_URL = os.environ['PRO_BYOL_URL']
-    # ENTERPRISE_URL = os.environ['ENTERPRISE_URL']
-    # NTERPRISE_BYOL_URL = os.environ['ENTERPRISE_BYOL_URL']
-    # DOCKER_URL = os.environ['DOCKER_URL']
-
     stackResponse = cloudformation.describe_stacks(StackName=stackId)
     print(str(stackResponse))
     stack, = stackResponse['Stacks']
@@ -65,19 +56,7 @@ def cloudformation_handler(stackId):
     print("Scobot says: Wow, nice output")
     print("Scobot says: Dispatching URL to Selenium Tests")
 
-    # Lite
-    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], LITE_URL)
-    # Pro
-    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], PRO_URL)
-    # Pro BYOL
-    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], PRO_BYOL_URL)
-    # Enterprise
-    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], ENTERPRISE_URL)
-    # Enterprise BYOL
-    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], ENTERPRISE_BYOL_URL)
-    # Docker
-    # dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], DOCKER_URL)
-
+    dispatcher(out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], out['WEBSITE_URL'])
     return True
 
 
@@ -112,11 +91,11 @@ def message_handler(message):
         return True
 
 
-def dispatcher(url, username, password, new_url):
+def dispatcher(url, username, password, website_url):
     try:
-        # add_lunar.test_add_lunar(url, username, password, new_url)
-        unittest.TextTestRunner().run(
-            unittest.TestLoader().loadTestsFromTestCase(add_lunar_template))
+        add_lunar.test(url, username, password, website_url)
+        # unittest.TextTestRunner().run(
+        #     unittest.TestLoader().loadTestsFromTestCase(add_lunar_template))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))

@@ -1,11 +1,9 @@
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
-
 
 class LoginPage(BasePage):
 
@@ -20,4 +18,3 @@ class LoginPage(BasePage):
     def login_button_present(self):
         login_button = self.driver.find_element_by_css_selector(".btn.btn-color2.text-white.btn-lg.text-uppercase")
         return login_button.is_displayed()
-

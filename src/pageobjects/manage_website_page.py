@@ -2,12 +2,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 
-
 class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
-
 
 class ManageWebsitePage(BasePage):
 
@@ -72,7 +70,5 @@ class ManageWebsitePage(BasePage):
         select = Select(self.driver.find_element_by_id("custom_select"))
         select.select_by_visible_text("Upload Theme")
 
-
     def click_start_managing(self):
         self.driver.find_element_by_link_text("Start Managing Your Website").click()
-

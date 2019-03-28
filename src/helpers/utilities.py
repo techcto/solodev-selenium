@@ -7,7 +7,6 @@ class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
 
-
 class Utilities(BasePage):
     def wait_for_page_complete(self, timeout):
         self.driver.implicitly_wait(1)
@@ -36,4 +35,3 @@ class Utilities(BasePage):
     def presence_of_elements_by_css_selector(self, driver, locator):
         present = len(driver.find_elements_by_css_selector(locator)) > 0
         return present
-
