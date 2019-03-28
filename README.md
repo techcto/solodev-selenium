@@ -42,15 +42,3 @@ Everything is summarized into a simple Makefile so use:
 * Adjust lambda function parameters to match your necessities, for the given example:
     * Timeout: +10 seconds
     * Memory: + 250MB 
-
-## Shouts to
-* [Docker lambda](https://github.com/lambci/docker-lambda)
-* [Lambdium](https://github.com/smithclay/lambdium)
-* [Serverless Chrome repo](https://github.com/adieuadieu/serverless-chrome) & [medium post](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb)
-* [Chromeless](https://github.com/graphcool/chromeless)
-
-## Contributors
-* Jairo Vadillo ([@jairovadillo](https://github.com/jairovadillo))
-* Pere Giro ()
-* Ricard Falcó ([@ricardfp](https://github.com/ricardfp))
-...
