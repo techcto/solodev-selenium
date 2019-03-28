@@ -113,10 +113,14 @@ def message_handler(message):
 
 
 def dispatcher(url, username, password, new_url):
+    os.environ["URL"] = url
+    os.environ["USERNAME"] = username
+    os.environ["PASSWORD"] = password
+    os.environ["NEW_URL"] = new_url
     try:
         # add_lunar.test_add_lunar(url, username, password, new_url)
         unittest.TextTestRunner().run(
-            unittest.TestLoader().loadTestsFromTestCase(add_lunar_template(url, username, password, new_url)))
+            unittest.TestLoader().loadTestsFromTestCase(add_lunar_template))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))

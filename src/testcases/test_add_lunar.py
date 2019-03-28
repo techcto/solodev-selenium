@@ -11,13 +11,10 @@ from selenium import webdriver
 
 
 class AddLunarTemplate(unittest.TestCase):
-
-    def __init__(self, url=strings.localhost_solodev_url,
-                       username=strings.username, password=strings.password, new_page_url=strings.sanity_page_url):
-        self.url = url
-        self.username = username
-        self.password = password
-        self.new_page_url = new_page_url
+    url = strings.localhost_solodev_url
+    username = strings.username
+    password = strings.password
+    new_page_url = strings.sanity_page_url
 
     def setUp(self):
         desired_cap = {
@@ -43,20 +40,20 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page = ManageWebsitePage(self.driver)
 
         time.sleep(5)
-        self.driver.get(self.url)
+        self.driver.get(AddLunarTemplate.url)
 
         if "Solodev" not in self.driver.title:
             raise Exception("Unable to load Solodev!")
 
         # Login
-        login_page.type_login(self.username, self.password)
+        login_page.type_login(AddLunarTemplate.username, AddLunarTemplate.password)
         login_page.click_login()
 
         # Create new website
         home_page.click_websites()
 
         websites_page.click_add_website()
-        manage_website_page.type_website_url(self.new_page_url)
+        manage_website_page.type_website_url(AddLunarTemplate.new_page_url)
         manage_website_page.click_next()
 
         manage_website_page.click_lunar_xp()
@@ -70,7 +67,7 @@ class AddLunarTemplate(unittest.TestCase):
 
         home_page = HomePage(self.driver)
         home_page.click_websites()
-        websites_page.find_site_name(self.new_page_url)
+        websites_page.find_site_name(AddLunarTemplate.new_page_url)
 
         #self.driver.switch_to.default_content()
 
@@ -88,5 +85,9 @@ class AddLunarTemplate(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    AddLunarTemplate.url = os.environ.get("URL", AddLunarTemplate.url)
+    AddLunarTemplate.username = os.environ.get("USERNAME", AddLunarTemplate.username)
+    AddLunarTemplate.password = os.environ.get("PASSWORD", AddLunarTemplate.password)
+    AddLunarTemplate.new_page_url = os.environ.get("NEW_PAGE_URL", AddLunarTemplate.new_page_url)
     unittest.main()
 
