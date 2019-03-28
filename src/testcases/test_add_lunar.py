@@ -40,13 +40,13 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page = ManageWebsitePage(self.driver)
 
         time.sleep(5)
-        self.driver.get(self.url)
+        self.driver.get(AddLunarTemplate.url)
 
         if "Solodev" not in self.driver.title:
             raise Exception("Unable to load Solodev!")
 
         # Login
-        login_page.type_login(self.username, self.password)
+        login_page.type_login(AddLunarTemplate.username, AddLunarTemplate.password)
         login_page.click_login()
 
         # Create new website
@@ -85,4 +85,8 @@ class AddLunarTemplate(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    AddLunarTemplate.url = os.environ.get("URL", AddLunarTemplate.url)
+    AddLunarTemplate.username = os.environ.get("USERNAME", AddLunarTemplate.username)
+    AddLunarTemplate.password = os.environ.get("PASSWORD", AddLunarTemplate.password)
+    AddLunarTemplate.new_page_url = os.environ.get("NEW_PAGE_URL", AddLunarTemplate.new_page_url)
     unittest.main()

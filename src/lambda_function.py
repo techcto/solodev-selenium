@@ -7,7 +7,7 @@ from src.testcases import test_add_lunar
 cloudformation = boto3.client('cloudformation')
 
 # Boot up tests
-add_lunar_template = test_add_lunar.AddLunarTemplate()
+# add_lunar_template = test_add_lunar.AddLunarTemplate()
 
 # Activate Scobot
 def lambda_handler(event, context):
@@ -93,7 +93,7 @@ def message_handler(message):
 
 def dispatcher(url, username, password, website_url):
     try:
-        add_lunar.test(url, username, password, website_url)
+        test_add_lunar.test(url, username, password, website_url)
         # unittest.TextTestRunner().run(
         #     unittest.TestLoader().loadTestsFromTestCase(add_lunar_template))
         print("Scobot says: That does it. See you next time.")
