@@ -4,6 +4,11 @@ services:
   lambda:
     build: .
     environment:
+      - COMMAND_EXECUTOR='${COMMAND_EXECUTOR}'
+      - NOTIFICATION_TYPES='CREATE_COMPLETE'
+      - PATH='/var/task/bin'
+      - PYTHONPATH='/var/task/src:/var/task/lib'
+      - SNS_TOPIC_ARN='${SNS_TOPIC_ARN}'
       - PYTHONPATH=/var/task/src:/var/task/lib
       - PATH=/var/task/bin
     volumes:
