@@ -4,13 +4,17 @@ services:
   lambda:
     build: .
     environment:
-      - COMMAND_EXECUTOR='${COMMAND_EXECUTOR}'
+      - COMMAND_EXECUTOR=${COMMAND_EXECUTOR}
       - NOTIFICATION_TYPES='CREATE_COMPLETE'
       - PATH='/var/task/bin'
       - PYTHONPATH='/var/task/src:/var/task/lib'
-      - SNS_TOPIC_ARN='${SNS_TOPIC_ARN}'
-      - STACK_ID='${STACK_ID}'
+      - SNS_TOPIC_ARN=${SNS_TOPIC_ARN}
+      - STACK_ID=${STACK_ID}
       - PYTHONPATH=/var/task/src:/var/task/lib
       - PATH=/var/task/bin
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ROLE_ARN=${AWS_ROLE_ARN}
     volumes:
       - ./src/:/var/task/src/
