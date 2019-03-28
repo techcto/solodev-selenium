@@ -9,6 +9,7 @@ services:
       - PATH='/var/task/bin'
       - PYTHONPATH='/var/task/src:/var/task/lib'
       - SNS_TOPIC_ARN='${SNS_TOPIC_ARN}'
+      - STACK_ID='${STACK_ID}'
       - PYTHONPATH=/var/task/src:/var/task/lib
       - PATH=/var/task/bin
     volumes:

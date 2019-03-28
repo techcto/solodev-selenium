@@ -22,23 +22,28 @@ def lambda_handler(event, context):
         return
 
     # Test Message Type
-    try:
-        print("Test if this was called from SQS or SNS message!")
+    stackId = os.getenv("STACK_ID", None)
+    if stackId:
+        print("Yee-Haw, we are going local. It looks like the stack id is: ", stackId)
+        cloudformation_handler(stackId)
+    else:
         try:
-            message = json.loads(event['Records'][0]['body'])
-            print(str(message))
-            message = message['Message']
-            print("This is a SQS message")
+            print("Test if this was called from SQS or SNS message!")
+            try:
+                message = json.loads(event['Records'][0]['body'])
+                print(str(message))
+                message = message['Message']
+                print("This is a SQS message")
+            except BaseException as e:
+                message = event['Records'][0]['Sns']['Message']
+                print("This is a SNS message")
+                print(str(message))
+                print(str(e))
         except BaseException as e:
-            message = event['Records'][0]['Sns']['Message']
-            print("This is a SNS message")
-            print(str(message))
-            print(str(e))
-    except BaseException as e:
-        print("Scobot says: Message could not be parsed. Event: %s" % (event))
-        return
+            print("Scobot says: Message could not be parsed. Event: %s" % (event))
+            return
 
-    message_handler(message)
+        message_handler(message)
     return True
 
 
