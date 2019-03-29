@@ -1,6 +1,7 @@
 import unittest
 import os
 import time
+from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -8,32 +9,40 @@ from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
 from selenium import webdriver
 
+
 class AddLunarTemplate(unittest.TestCase):
-    url = ""
-    username = ""
-    password = ""
-    website_url = ""
+    # url = ""
+    # username = ""
+    # password = ""
+    # website_url = ""
 
-    def __init__(self):
-        self.driver = webdriver
+    # def setUp(self):
+    #    self.driver = webdriver
 
-    def test(self, url, username, password, website_url):
+    def test_add_lunar(self, url=strings.localhost_solodev_url,
+                       username=strings.username, password=strings.password, website_url=strings.sanity_page_url):
         desired_cap = {
-        'browser': 'Chrome',
-        'browser_version': '70.0',
-        'os': 'Windows',
-        'os_version': '10',
-        'resolution': '2048x1536'
+            'browser': 'Chrome',
+            'browser_version': '70.0',
+            'os': 'Windows',
+            'os_version': '10',
+            'browserstack.debug': 'true',
+            'browserstack.console': 'verbose'
         }
 
         self.url = url
         self.username = username
         self.password = password
         self.website_url = website_url
+        self.driver = webdriver
 
-        self.driver = webdriver.Remote(
-            command_executor= os.getenv("COMMAND_EXECUTOR"),
-            desired_capabilities=desired_cap)
+        if "localhost" in url:
+            self.driver = webdriver.Chrome()
+        else:
+            self.driver = webdriver.Remote(
+                command_executor=os.getenv("COMMAND_EXECUTOR"),
+                desired_capabilities=desired_cap)
+
         self.driver.maximize_window()
 
         # Define webdriver wait and first page
@@ -83,6 +92,12 @@ class AddLunarTemplate(unittest.TestCase):
 
         # Assert we're back on login page
         self.assertTrue(login_page.login_button_present())
-
-    def tearDown(self):
         self.driver.quit()
+
+    # def tearDown(self):
+    #    self.driver.quit()
+
+
+if __name__ == "__main__":
+    unittest.main()
+
