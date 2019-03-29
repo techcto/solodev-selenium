@@ -9,6 +9,10 @@ from src.helpers.utilities import Utilities
 from selenium import webdriver
 
 class AddLunarTemplate(unittest.TestCase):
+    url = ""
+    username = ""
+    password = ""
+    website_url = ""
 
     def __init__(self):
         self.driver = webdriver
@@ -40,13 +44,13 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page = ManageWebsitePage(self.driver)
 
         time.sleep(5)
-        self.driver.get(AddLunarTemplate.url)
+        self.driver.get(self.url)
 
         if "Solodev" not in self.driver.title:
             raise Exception("Unable to load Solodev!")
 
         # Login
-        login_page.type_login(AddLunarTemplate.username, AddLunarTemplate.password)
+        login_page.type_login(self.username, self.password)
         login_page.click_login()
 
         # Create new website
@@ -82,11 +86,3 @@ class AddLunarTemplate(unittest.TestCase):
 
     def tearDown(self):
         self.driver.quit()
-
-
-if __name__ == "__main__":
-    AddLunarTemplate.url = os.environ.get("URL", AddLunarTemplate.url)
-    AddLunarTemplate.username = os.environ.get("USERNAME", AddLunarTemplate.username)
-    AddLunarTemplate.password = os.environ.get("PASSWORD", AddLunarTemplate.password)
-    AddLunarTemplate.new_page_url = os.environ.get("NEW_PAGE_URL", AddLunarTemplate.new_page_url)
-    unittest.main()
