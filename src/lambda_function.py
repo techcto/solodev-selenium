@@ -85,8 +85,8 @@ def message_handler(message):
     i = message.index("LogicalResourceId='") + len("LogicalResourceId='")
     j = message.index("'", i)
     LogicalResourceId = message[i:j]
-    print("StackName found is: " + StackName)
-    print("LogicalResourceId found is: " + LogicalResourceId)
+    #print("StackName found is: " + StackName)
+    #print("LogicalResourceId found is: " + LogicalResourceId)
 
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
         print("Scobot says: These are not the codes we are looking for")
