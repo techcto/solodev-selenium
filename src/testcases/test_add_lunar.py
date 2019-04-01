@@ -26,6 +26,7 @@ class AddLunarTemplate(unittest.TestCase):
             'browser_version': '70.0',
             'os': 'Windows',
             'os_version': '10',
+            'resolution': '1920x1080',
             'browserstack.debug': 'true',
             'browserstack.console': 'verbose'
         }
