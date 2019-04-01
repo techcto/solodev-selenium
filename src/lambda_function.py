@@ -79,6 +79,13 @@ def message_handler(message):
     resourceStatus = message[i:j]
     print("Scobot says: Cloudformation Status: ", resourceStatus)
 
+    i = message.index("StackName='") + len("StackName='")
+    j = message.index("'", i)
+    StackName = message[i:j]
+    i = message.index("LogicalResourceId='") + len("LogicalResourceId='")
+    j = message.index("'", i)
+    LogicalResourceId = message[i:j]
+
     if "ResourceType='AWS::CloudFormation::Stack'" not in message:
         print("Scobot says: These are not the codes we are looking for")
         return True
@@ -87,7 +94,7 @@ def message_handler(message):
         print("Scobot says: These are not the codes we are looking for")
         return True
 
-    if "ResourceStatus='CREATE_COMPLETE'" in message:
+    if "ResourceStatus='CREATE_COMPLETE'" in message and StackName == LogicalResourceId:
         print(message)
         print("Scobot says: Wow, that is a lot of data")
 
