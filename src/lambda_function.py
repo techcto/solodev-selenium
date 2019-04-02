@@ -116,7 +116,6 @@ def message_handler(message):
 
 def dispatcher(url, username, password, website_url):
     try:
-        add_lunar_template.test(url, username, password, website_url)
         unittest.TextTestRunner().run(
                  unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,
                                                                                                password, website_url)))
