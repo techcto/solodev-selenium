@@ -54,7 +54,7 @@ class AddLunarTemplate(unittest.TestCase):
         websites_page = WebsitePage(self.driver)
         manage_website_page = ManageWebsitePage(self.driver)
 
-        time.sleep(60)
+        time.sleep(30)
         self.driver.get(self.url)
 
         if "Solodev" not in self.driver.title:
@@ -75,11 +75,11 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_lunar_xp()
         manage_website_page.click_next()
 
-        utilities.wait_for_page_complete(30)
+        # utilities.wait_for_page_complete(30)
 
         manage_website_page.click_next()
 
-        utilities.wait_for_page_complete(120)
+        # utilities.wait_for_page_complete(120)
 
         home_page = HomePage(self.driver)
         home_page.click_websites()
@@ -88,13 +88,13 @@ class AddLunarTemplate(unittest.TestCase):
         #self.driver.switch_to.default_content()
 
         home_page = HomePage(self.driver)
-        utilities.wait_for_page_complete(1)
+        # utilities.wait_for_page_complete(1)
         home_page.click_profile()
-        utilities.wait_for_page_complete(1)
+        # utilities.wait_for_page_complete(1)
         home_page.click_logout()
 
-        self.driver.get(self.website_url)
-        #self.driver.get("http://lunarxp.com")
+        # self.driver.get(self.website_url)
+        self.driver.get("http://lunarxp.com")
 
         hold_key(self.driver, 4)
 
