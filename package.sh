@@ -15,4 +15,4 @@ echo $(aws s3 cp s3://build-secure/params/solodev-pro-single.json - ) > solodev-
 aws cloudformation create-stack --disable-rollback --stack-name pro-byol-tmp-${DATE} --disable-rollback --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameters file://solodev-pro-single-byol.json \
     --template-url https://s3.amazonaws.com/solodev-aws-ha/aws/solodev-pro-opsworks-byol.yaml \
-    --notification-arns {$NOTIFICATION_ARN}    
+    --notification-arns ${NOTIFICATION_ARN}    
