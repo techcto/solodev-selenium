@@ -94,8 +94,8 @@ class AddLunarTemplate(unittest.TestCase):
         utilities.wait_for_page_complete(1)
         home_page.click_logout()
 
-        #self.driver.get(self.website_url)
-        self.driver.get("http://lunarxp.com")
+        self.driver.get(self.website_url)
+        #self.driver.get("http://lunarxp.com")
 
         hold_key(self.driver, 4)
 
