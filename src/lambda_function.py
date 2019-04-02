@@ -14,8 +14,8 @@ from src.testcases import test_add_lunar
 cloudformation = boto3.client('cloudformation')
 
 # Boot up tests
-# add_lunar_template = test_add_lunar.AddLunarTemplate()
-record_video = test_90second_website_launch.AddLunarTemplate()
+add_lunar_template = test_add_lunar.AddLunarTemplate()
+# record_video = test_90second_website_launch.AddLunarTemplate()
 
 
 # Activate Scobot
@@ -116,12 +116,12 @@ def message_handler(message):
 
 def dispatcher(url, username, password, website_url):
     try:
-        # add_lunar_template.test(url, username, password, website_url)
-        # unittest.TextTestRunner().run(
-        #         #    unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,
-        #         #                                                                                  password, website_url)))
-        unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase
-                                      (record_video.test_90second_website_launch(url, username, password, website_url)))
+        add_lunar_template.test(url, username, password, website_url)
+        unittest.TextTestRunner().run(
+                 unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,
+                                                                                               password, website_url)))
+        # unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase
+        #                              (record_video.test_90second_website_launch(url, username, password, website_url)))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
