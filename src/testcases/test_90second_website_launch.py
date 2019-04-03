@@ -2,13 +2,22 @@ import unittest
 import os
 import time
 import json
+import sys
+
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.keys import Keys
+
 from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
 from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
+from src.pageobjects.websites_dev_page import WebsitesDevPage
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
 
 
 class AddLunarTemplate(unittest.TestCase):
@@ -24,12 +33,13 @@ class AddLunarTemplate(unittest.TestCase):
                                      username=strings.username, password=strings.password,
                                      website_url=strings.sanity_page_url):
         desired_cap = {
-            'browser': 'Chrome',
-            'browser_version': '70.0',
+            'browser': 'Firefox',
+            'browser_version': '66.0',
             'os': 'Windows',
             'os_version': '10',
             'resolution': '1920x1080',
-            'browserstack.console': 'verbose'
+            'browserstack.console': 'verbose',
+            'browserstack.selenium_version': '3.141.0'
         }
 
         self.url = url
@@ -39,7 +49,8 @@ class AddLunarTemplate(unittest.TestCase):
         self.driver = webdriver
 
         if "localhost" in url:
-            self.driver = webdriver.Chrome()
+            #self.driver = webdriver.Chrome()
+            self.driver = webdriver.Firefox()
         else:
             self.driver = webdriver.Remote(
                 command_executor=os.getenv("COMMAND_EXECUTOR"),
@@ -48,13 +59,14 @@ class AddLunarTemplate(unittest.TestCase):
         self.driver.fullscreen_window()
 
         # Define webdriver wait and first page
-        utilities = Utilities(self.driver)
+        # utilities = Utilities(self.driver)
         login_page = LoginPage(self.driver)
         home_page = HomePage(self.driver)
         websites_page = WebsitePage(self.driver)
         manage_website_page = ManageWebsitePage(self.driver)
+        # websites_dev_page = WebsitesDevPage(self.driver)
 
-        time.sleep(30)
+        time.sleep(10)
         self.driver.get(self.url)
 
         if "Solodev" not in self.driver.title:
@@ -68,6 +80,9 @@ class AddLunarTemplate(unittest.TestCase):
         # Create new website
         home_page.click_websites()
 
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Add Website")))
+
         websites_page.click_add_website()
         manage_website_page.type_website_url(self.website_url)
         manage_website_page.click_next()
@@ -75,35 +90,39 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_lunar_xp()
         manage_website_page.click_next()
 
-        # utilities.wait_for_page_complete(30)
+        self.driver.set_page_load_timeout(10)
 
-        manage_website_page.click_next()
+        try:
+            manage_website_page.click_next()
+        except TimeoutException:
+            print("caught exception, checking for if page is ready")
+            # print(e.stacktrace)
+            pass
 
-        # utilities.wait_for_page_complete(120)
+        wait = WebDriverWait(self.driver, 300)
+        wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
 
-        home_page = HomePage(self.driver)
-        home_page.click_websites()
-        websites_page.find_site_name(self.website_url)
+        manage_website_page = ManageWebsitePage(self.driver)
+        manage_website_page.click_start_managing()
 
-        #self.driver.switch_to.default_content()
+        websites_dev_page = WebsitesDevPage(self.driver)
+        #websites_dev_page.find_site_name()
 
-        home_page = HomePage(self.driver)
-        # utilities.wait_for_page_complete(1)
-        home_page.click_profile()
-        # utilities.wait_for_page_complete(1)
-        home_page.click_logout()
+        websites_dev_page.expand_folder("www")
+        websites_dev_page.click_page("index.stml")
 
-        # self.driver.get(self.website_url)
+        #Open new tab
+        self.driver.find_element_by_tag_name("body").send_keys(Keys.COMMAND + 't')
         self.driver.get("http://lunarxp.com")
 
         hold_key(self.driver, 4)
 
         # Assert we're at the bottom of the page
         self.assertTrue(len(self.driver.find_elements_by_css_selector(".btn.btn-lg.btn-yellow")) > 0)
-        self.driver.quit()
+        # self.driver.quit()
 
-    # def tearDown(self):
-    #    self.driver.quit()
+    def tearDown(self):
+        self.driver.quit()
 
 
 def dispatch_key_event(driver, name, options={}):

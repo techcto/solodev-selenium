@@ -1,21 +1,30 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
+
 
 class BasePage(object):
 
     def __init__(self, driver):
         self.driver = driver
 
+
 class Utilities(BasePage):
-    def wait_for_page_complete(self, timeout):
-        self.driver.implicitly_wait(1)
+    def wait_for_page_complete(self, timeout, ele_path):
+        wait = WebDriverWait(self.driver, 1)
         page_state = self.driver.execute_script('return document.readyState;')
         i = 0
         while not page_state == 'complete':
-            self.driver.implicitly_wait(1)
             if i == timeout:
-                break
+                return False
+            elif page_state == 'complete':
+                return True
+            else:
+                wait.until(ec.element_to_be_clickable((By.XPATH, ele_path)))
+                page_state = self.driver.execute_script('return document.readyState;')
+                i = i + 1
+        return True
 
     def wait_until_visible(self, driver, timeout, locator):
         wait = WebDriverWait(driver, timeout)
