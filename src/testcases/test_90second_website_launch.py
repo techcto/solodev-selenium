@@ -39,7 +39,7 @@ class AddLunarTemplate(unittest.TestCase):
             'os_version': '10',
             'resolution': '1920x1080',
             'browserstack.console': 'verbose',
-            'browserstack.selenium_version': '3.141.0'
+            'browserstack.selenium_version': '3.14.0'
         }
 
         self.url = url
@@ -100,7 +100,7 @@ class AddLunarTemplate(unittest.TestCase):
             # print(e.stacktrace)
             pass
 
-        wait = WebDriverWait(self.driver, 300)
+        wait = WebDriverWait(self.driver, 600)
         wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
 
         manage_website_page = ManageWebsitePage(self.driver)
@@ -120,7 +120,7 @@ class AddLunarTemplate(unittest.TestCase):
 
         # Assert we're at the bottom of the page
         self.assertTrue(len(self.driver.find_elements_by_css_selector(".btn.btn-lg.btn-yellow")) > 0)
-        # self.driver.quit()
+        self.driver.quit()
 
     def tearDown(self):
         self.driver.quit()

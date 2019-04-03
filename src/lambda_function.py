@@ -5,17 +5,17 @@ from src.testcases import test_90second_website_launch
 from src.testcases import test_add_lunar
 
 # Boot up AWS
-# access_key_id = os.getenv('AWS_ACCESS_KEY_ID', None)
-# secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY', None)
+access_key_id = os.getenv('AWS_ACCESS_KEY_ID', None)
+secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY', None)
 
-# if access_key_id:
-#     cloudformation = boto3.client('cloudformation', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)
-# else:
-cloudformation = boto3.client('cloudformation')
+if access_key_id:
+    cloudformation = boto3.client('cloudformation', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)
+else:
+    cloudformation = boto3.client('cloudformation')
 
 # Boot up tests
-add_lunar_template = test_add_lunar.AddLunarTemplate()
-# record_video = test_90second_website_launch.AddLunarTemplate()
+# add_lunar_template = test_add_lunar.AddLunarTemplate()
+record_video = test_90second_website_launch.AddLunarTemplate()
 
 
 # Activate Scobot
@@ -116,11 +116,11 @@ def message_handler(message):
 
 def dispatcher(url, username, password, website_url):
     try:
-        unittest.TextTestRunner().run(
-                 unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,
-                                                                                               password, website_url)))
-        # unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase
-        #                              (record_video.test_90second_website_launch(url, username, password, website_url)))
+        #unittest.TextTestRunner().run(
+        #        unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,
+        #                                                                                       password, website_url)))
+        unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase
+                                     (record_video.test_90second_website_launch(url, username, password, website_url)))
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
