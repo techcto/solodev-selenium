@@ -5,13 +5,13 @@ from src.testcases import test_90second_website_launch
 from src.testcases import test_add_lunar
 
 # Boot up AWS
-access_key_id = os.getenv('AWS_ACCESS_KEY_ID', None)
-secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY', None)
+# access_key_id = os.getenv('AWS_ACCESS_KEY_ID', None)
+# secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY', None)
 
-if access_key_id:
-    cloudformation = boto3.client('cloudformation', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)
-else:
-    cloudformation = boto3.client('cloudformation')
+# if access_key_id:
+# cloudformation = boto3.client('cloudformation', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)
+# else:
+cloudformation = boto3.client('cloudformation')
 
 # Boot up tests
 # add_lunar_template = test_add_lunar.AddLunarTemplate()
