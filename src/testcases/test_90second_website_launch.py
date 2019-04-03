@@ -66,7 +66,7 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page = ManageWebsitePage(self.driver)
         # websites_dev_page = WebsitesDevPage(self.driver)
 
-        time.sleep(10)
+        time.sleep(30)
         self.driver.get(self.url)
 
         if "Solodev" not in self.driver.title:
