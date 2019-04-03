@@ -80,7 +80,7 @@ class AddLunarTemplate(unittest.TestCase):
         # Create new website
         home_page.click_websites()
 
-        wait = WebDriverWait(self.driver, 5)
+        wait = WebDriverWait(self.driver, 10)
         wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Add Website")))
 
         websites_page.click_add_website()
@@ -90,7 +90,7 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_lunar_xp()
         manage_website_page.click_next()
 
-        time.sleep(5)
+        wait.until(ec.presence_of_element_located((By.ID, "appForm")))
         self.driver.set_page_load_timeout(10)
 
         try:
@@ -113,7 +113,7 @@ class AddLunarTemplate(unittest.TestCase):
         websites_dev_page.click_page("index.stml")
 
         #Open new tab
-        self.driver.find_element_by_tag_name("body").send_keys(Keys.COMMAND + 't')
+        self.driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 't')
         self.driver.get("http://lunarxp.com")
 
         hold_key(self.driver, 4)
