@@ -90,6 +90,7 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_lunar_xp()
         manage_website_page.click_next()
 
+        time.sleep(5)
         self.driver.set_page_load_timeout(10)
 
         try:
