@@ -1,7 +1,19 @@
+import os
+
+import time
+from enum import Enum
 from selenium import webdriver
+from selenium.webdriver import Chrome
+from selenium.webdriver import Firefox
+from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
+
+
+class BrowserType(Enum):
+    Chrome = 1
+    Firefox = 2
 
 
 class BasePage(object):
@@ -11,20 +23,21 @@ class BasePage(object):
 
 
 class Utilities(BasePage):
-    def wait_for_page_complete(self, timeout, ele_path):
-        wait = WebDriverWait(self.driver, 1)
-        page_state = self.driver.execute_script('return document.readyState;')
-        i = 0
-        while not page_state == 'complete':
-            if i == timeout:
-                return False
-            elif page_state == 'complete':
-                return True
+    def wait_for_page_complete(self, driver, states="complete", pending=None):
+        print('> waiting...', end='', flush=True)
+        while True:
+            state = driver.execute_script('return document.readyState;')
+            if state not in states:
+                print('.', end='', flush=True)
+                if callable(pending):
+                    pending()
+                time.sleep(1)
             else:
-                wait.until(ec.element_to_be_clickable((By.XPATH, ele_path)))
-                page_state = self.driver.execute_script('return document.readyState;')
-                i = i + 1
-        return True
+                break
+        print('', state)
+        # seems like once we hit the ready state the browser still needs just
+        # a little more time
+        time.sleep(3)
 
     def wait_until_visible(self, driver, timeout, locator):
         wait = WebDriverWait(driver, timeout)
@@ -44,3 +57,37 @@ class Utilities(BasePage):
     def presence_of_elements_by_css_selector(self, driver, locator):
         present = len(driver.find_elements_by_css_selector(locator)) > 0
         return present
+
+# page load strategy should be normal 99% of the time
+# the only time it shouldnt is when chrome needs to load a long page and we need to trick browserstack
+# if set to none, you need to use wait for page complete method above after
+# every command that would change the page (clicking links, buttons, etc)
+class UtilNoDriver(BasePage):
+    def make_driver(self, browser_type, url, page_load_strategy="normal"):
+        desired_cap = {
+            'browser': browser_type,
+            'browser_version': '66.0',
+            'acceptSslCerts ': 'true',
+            'os': 'Windows',
+            'os_version': '10',
+            'resolution': '1920x1080',
+            'browserstack.console': 'verbose',
+            'browserstack.selenium_version': '3.14.0'
+        }
+
+        if "localhost" in url:
+            if "Chrome" in browser_type:
+                desired_cap['pageLoadStrategy'] = page_load_strategy
+                self.driver = webdriver.Chrome(desired_capabilities=desired_cap)
+            elif "Firefox" in browser_type:
+                self.driver = webdriver.Firefox(desired_capabilities=desired_cap)
+            self.driver.maximize_window()
+        else:
+            self.driver = webdriver.Remote(
+                command_executor=os.getenv("COMMAND_EXECUTOR"),
+                desired_capabilities=desired_cap)
+            self.driver.fullscreen_window()
+
+        return self.driver
+
+

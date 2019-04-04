@@ -1,65 +1,39 @@
+import datetime
 import unittest
-import os
 import time
 import json
 import sys
 
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver import ActionChains
 from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
 from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
+from src.helpers.utilities import UtilNoDriver
 from src.pageobjects.websites_dev_page import WebsitesDevPage
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 
 
 class AddLunarTemplate(unittest.TestCase):
-    # url = ""
-    # username = ""
-    # password = ""
-    # website_url = ""
-
+    
+    # This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
     # def setUp(self):
     #    self.driver = webdriver
 
     def test_90second_website_launch(self, url=strings.localhost_solodev_url,
                                      username=strings.username, password=strings.password,
-                                     website_url=strings.sanity_page_url):
-        desired_cap = {
-            'browser': 'Firefox',
-            'browser_version': '66.0',
-            'os': 'Windows',
-            'os_version': '10',
-            'resolution': '1920x1080',
-            'browserstack.console': 'verbose',
-            'browserstack.selenium_version': '3.14.0'
-        }
+                                     website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
 
-        self.url = url
-        self.username = username
-        self.password = password
-        self.website_url = website_url
-        self.driver = webdriver
+        util_no_driver = UtilNoDriver(self)
+        self.driver = util_no_driver.make_driver(browser_type, url, "none")
 
-        if "localhost" in url:
-            #self.driver = webdriver.Chrome()
-            self.driver = webdriver.Firefox()
-            self.driver.maximize_window()
-        else:
-            self.driver = webdriver.Remote(
-                command_executor=os.getenv("COMMAND_EXECUTOR"),
-                desired_capabilities=desired_cap)
-            self.driver.fullscreen_window()
 
-        # Define webdriver wait and first page
-        # utilities = Utilities(self.driver)
+        utilities = Utilities(self.driver)
         login_page = LoginPage(self.driver)
         home_page = HomePage(self.driver)
         websites_page = WebsitePage(self.driver)
@@ -67,53 +41,69 @@ class AddLunarTemplate(unittest.TestCase):
         # websites_dev_page = WebsitesDevPage(self.driver)
 
         time.sleep(30)
-        self.driver.get(self.url)
+        self.driver.get(url)
+        utilities.wait_for_page_complete(self.driver)
 
         if "Solodev" not in self.driver.title:
             raise Exception("Unable to load Solodev!")
 
         # Login
         time.sleep(5)
-        login_page.type_login(self.username, self.password)
+        login_page.type_login(username, password)
         login_page.click_login()
+        utilities.wait_for_page_complete(self.driver)
 
         # Create new website
         home_page.click_websites()
+        utilities.wait_for_page_complete(self.driver)
 
         wait = WebDriverWait(self.driver, 10)
         wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Add Website")))
-
         websites_page.click_add_website()
-        manage_website_page.type_website_url(self.website_url)
+        utilities.wait_for_page_complete(self.driver)
+
+        manage_website_page.type_website_url(website_url)
         manage_website_page.click_next()
+        utilities.wait_for_page_complete(self.driver)
 
         manage_website_page.click_lunar_xp()
+        utilities.wait_for_page_complete(self.driver)
         manage_website_page.click_next()
+        utilities.wait_for_page_complete(self.driver)
 
-        self.driver.set_page_load_timeout(10)
-
-        try:
+        wait = WebDriverWait(self.driver, 1200)
+        if "Firefox" in browser_type:
+            self.driver.set_page_load_timeout(10)
+            try:
+                manage_website_page.click_next()
+            except TimeoutException:
+                print('NOTE: at this point we can do other browser things to keep browserstack happy')
+                pass
+            wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
+        elif "Chrome" in browser_type:
             manage_website_page.click_next()
-        except TimeoutException:
-            print("caught exception, checking for if page is ready")
-            # print(e.stacktrace)
-            pass
+            utilities.wait_for_page_complete(self.driver, states=("interactive", "complete"))
+            print('NOTE: at this point we can do other browser things to keep browserstack happy')
+            wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
+            utilities.wait_for_page_complete(self.driver)
 
-        wait = WebDriverWait(self.driver, 600)
-        wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
 
         manage_website_page = ManageWebsitePage(self.driver)
         manage_website_page.click_start_managing()
+        utilities.wait_for_page_complete(self.driver)
 
         websites_dev_page = WebsitesDevPage(self.driver)
         # websites_dev_page.find_site_name()
 
         websites_dev_page.expand_folder("www")
+        utilities.wait_for_page_complete(self.driver)
         websites_dev_page.click_page("index.stml")
+        utilities.wait_for_page_complete(self.driver)
 
         # Open new tab
         # self.driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 't')
         self.driver.get("http://lunarxp.com")
+        utilities.wait_for_page_complete(self.driver)
 
         hold_key(self.driver, 4)
 
@@ -153,6 +143,15 @@ def hold_key(driver, duration):
 
         options["autoRepeat"] = True
         time.sleep(0.01)
+
+
+def click_element(driver, el):
+    """Helper function for simulating button clicks while the browser is busy."""
+    def func():
+        actions = ActionChains(driver)
+        actions.click(el)
+        actions.perform()
+    return func
 
 
 if __name__ == "__main__":
