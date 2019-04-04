@@ -4,4 +4,5 @@ username = "solodev"
 password = "password"
 sanity_page_url = "www.sanitytest.com"
 blank_page_name = "www.blankpage.com"
+default_browser_type = "Chrome"
 
