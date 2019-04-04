@@ -1,6 +1,9 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
+
 
 class BasePage(object):
     def __init__(self, driver):
@@ -55,6 +58,7 @@ class ManageWebsitePage(BasePage):
         self.driver.find_element_by_css_selector("#name").send_keys(website_url)
 
     def click_next(self):
+        self.wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, "input[value='Next']")))
         self.driver.find_element_by_css_selector("input[value='Next']").click()
 
     def click_lunar_xp(self):

@@ -90,7 +90,6 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_lunar_xp()
         manage_website_page.click_next()
 
-        wait.until(ec.presence_of_element_located((By.ID, "appForm")))
         self.driver.set_page_load_timeout(10)
 
         try:
