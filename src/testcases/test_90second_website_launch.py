@@ -113,7 +113,7 @@ class AddLunarTemplate(unittest.TestCase):
 
         # Open new tab
         # self.driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 't')
-        self.driver.get("http://" + website_url)
+        self.driver.get("http://lunarxp.com")
 
         hold_key(self.driver, 4)
 
