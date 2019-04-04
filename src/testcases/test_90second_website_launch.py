@@ -51,12 +51,12 @@ class AddLunarTemplate(unittest.TestCase):
         if "localhost" in url:
             #self.driver = webdriver.Chrome()
             self.driver = webdriver.Firefox()
+            self.driver.maximize_window()
         else:
             self.driver = webdriver.Remote(
                 command_executor=os.getenv("COMMAND_EXECUTOR"),
                 desired_capabilities=desired_cap)
-
-        self.driver.fullscreen_window()
+            self.driver.fullscreen_window()
 
         # Define webdriver wait and first page
         # utilities = Utilities(self.driver)
@@ -106,13 +106,13 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_start_managing()
 
         websites_dev_page = WebsitesDevPage(self.driver)
-        #websites_dev_page.find_site_name()
+        # websites_dev_page.find_site_name()
 
         websites_dev_page.expand_folder("www")
         websites_dev_page.click_page("index.stml")
 
-        #Open new tab
-        self.driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 't')
+        # Open new tab
+        # self.driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 't')
         self.driver.get("http://" + website_url)
 
         hold_key(self.driver, 4)
