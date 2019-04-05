@@ -1,4 +1,6 @@
 import os, json, re
+import traceback
+
 import boto3
 import unittest
 from src.testcases import test_90second_website_launch
@@ -124,7 +126,9 @@ def dispatcher(url, username, password, website_url):
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
+        print(traceback.print_exception)
         print("Oh no, the test failed.  Please alert the team.")
+        return False
 
     return True
 
