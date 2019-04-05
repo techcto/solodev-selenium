@@ -126,7 +126,7 @@ def dispatcher(url, username, password, website_url):
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))
-        traceback.print_tb(e)
+        traceback.print_exc()
         print("Oh no, the test failed.  Please alert the team.")
         return False
 
