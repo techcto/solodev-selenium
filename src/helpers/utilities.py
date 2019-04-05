@@ -82,11 +82,13 @@ class UtilNoDriver(BasePage):
             elif "Firefox" in browser_type:
                 self.driver = webdriver.Firefox(desired_capabilities=desired_cap)
             self.driver.maximize_window()
+            time.sleep(10)
         else:
             self.driver = webdriver.Remote(
                 command_executor=os.getenv("COMMAND_EXECUTOR"),
                 desired_capabilities=desired_cap)
             self.driver.fullscreen_window()
+            time.sleep(60)
 
         return self.driver
 

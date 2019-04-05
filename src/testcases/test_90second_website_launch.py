@@ -40,7 +40,6 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page = ManageWebsitePage(self.driver)
         # websites_dev_page = WebsitesDevPage(self.driver)
 
-        time.sleep(30)
         self.driver.get(url)
         utilities.wait_for_page_complete(self.driver)
 
@@ -62,6 +61,7 @@ class AddLunarTemplate(unittest.TestCase):
         websites_page.click_add_website()
         utilities.wait_for_page_complete(self.driver)
 
+        wait.until(ec.visibility_of_element_located((By.CSS_SELECTOR, "#name")))
         manage_website_page.type_website_url(website_url)
         manage_website_page.click_next()
         utilities.wait_for_page_complete(self.driver)
