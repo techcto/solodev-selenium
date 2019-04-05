@@ -75,21 +75,28 @@ class UtilNoDriver(BasePage):
             'browserstack.selenium_version': '3.14.0'
         }
 
-        if "localhost" in url:
-            if "Chrome" in browser_type:
-                desired_cap['pageLoadStrategy'] = page_load_strategy
+        if "Chrome" in browser_type:
+            desired_cap['pageLoadStrategy'] = page_load_strategy
+            if "localhost" in url:
                 self.driver = webdriver.Chrome(desired_capabilities=desired_cap)
-            elif "Firefox" in browser_type:
+                time.sleep(10)
+            else:
+                self.driver = webdriver.Remote(
+                    command_executor=os.getenv("COMMAND_EXECUTOR"),
+                    desired_capabilities=desired_cap)
+                self.driver.fullscreen_window()
+                time.sleep(60)
+        elif "Firefox" in browser_type:
+            if "localhost" in url:
                 self.driver = webdriver.Firefox(desired_capabilities=desired_cap)
-            self.driver.maximize_window()
-            time.sleep(10)
-        else:
-            self.driver = webdriver.Remote(
-                command_executor=os.getenv("COMMAND_EXECUTOR"),
-                desired_capabilities=desired_cap)
-            self.driver.fullscreen_window()
-            time.sleep(60)
+                self.driver.maximize_window()
+                time.sleep(10)
+            else:
+                self.driver = webdriver.Remote(
+                    command_executor=os.getenv("COMMAND_EXECUTOR"),
+                    desired_capabilities=desired_cap)
+                self.driver.fullscreen_window()
+                time.sleep(60)
 
         return self.driver
-
 
