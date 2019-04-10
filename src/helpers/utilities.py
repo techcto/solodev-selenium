@@ -79,6 +79,7 @@ class UtilNoDriver(BasePage):
             desired_cap['pageLoadStrategy'] = page_load_strategy
             if "localhost" in url:
                 self.driver = webdriver.Chrome(desired_capabilities=desired_cap)
+                self.driver.maximize_window()
                 time.sleep(10)
             else:
                 self.driver = webdriver.Remote(
