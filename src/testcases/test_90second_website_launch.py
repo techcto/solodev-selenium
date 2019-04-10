@@ -84,7 +84,6 @@ class AddLunarTemplate(unittest.TestCase):
             manage_website_page.click_next()
             utilities.wait_for_page_complete(self.driver, states=("interactive", "complete"))
             print('NOTE: at this point we can do other browser things to keep browserstack happy')
-
             wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
 
         manage_website_page = ManageWebsitePage(self.driver)
