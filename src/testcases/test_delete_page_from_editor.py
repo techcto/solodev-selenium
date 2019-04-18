@@ -44,7 +44,7 @@ class DeletePageFromEditor(unittest.TestCase):
 
         # expand web files
         websites_dev_page.expand_folder("www")
-        # TODO Add file named 0-delete.stml so we always know the file name
+        # TODO Add page named 0-delete.stml so we always know the file name
         # TODO And it'll always be at the top of the list
         websites_dev_page.click_page("404.stml")
 

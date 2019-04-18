@@ -48,8 +48,10 @@ class DeletePageFromGrid(unittest.TestCase):
         iframe_A = self.driver.find_element_by_css_selector("#multitabs_info_2")
         self.driver.switch_to.frame(iframe_A)
 
-        # TODO Add file named 0-delete.stml so we always know the file name
+        # TODO Add page named 0-delete.stml so we always know the file name
         # TODO And it'll always be at the top of the list
+
+        self.driver.find_element_by_css_selector('data-name="Add Page"').click()
 
 
 
