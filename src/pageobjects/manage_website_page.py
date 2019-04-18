@@ -10,6 +10,7 @@ class BasePage(object):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
 
+
 class ManageWebsitePage(BasePage):
 
     def click_update_website(self):

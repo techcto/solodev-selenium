@@ -73,8 +73,10 @@ class HomePage(BasePage):
 
     # Rest Of The Page - click something in the grid
     # Websites
-    def click_a_website(self):
-        self.driver.find_element_by_css_selector().click()
+    def click_a_website(self, url):
+        table = self.driver.find_element_by_xpath("//div[@id='grid_websites_wrapper']/table/tbody")
+        website = table.find_element_by_xpath("//tr/td[contains(text(), '"+url+"')]")
+        website.click()
 
     # Managers
     def click_a_manager(self):
