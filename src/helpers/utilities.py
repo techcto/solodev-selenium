@@ -58,6 +58,7 @@ class Utilities(BasePage):
         present = len(driver.find_elements_by_css_selector(locator)) > 0
         return present
 
+
 # page load strategy should be normal 99% of the time
 # the only time it shouldnt is when chrome needs to load a long page and we need to trick browserstack
 # if set to none, you need to use wait for page complete method above after

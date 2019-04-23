@@ -14,6 +14,7 @@ from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
 from src.helpers.utilities import UtilNoDriver
 from src.pageobjects.websites_dev_page import WebsitesDevPage
+from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
@@ -22,8 +23,8 @@ from selenium.webdriver.support import expected_conditions as ec
 class AddLunarTemplate(unittest.TestCase):
     
     # This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
-    # def setUp(self):
-    #    self.driver = webdriver
+    def setUp(self):
+        self.driver = webdriver.Chrome()
 
     def test_90second_website_launch(self, url=strings.localhost_solodev_url,
                                      username=strings.username, password=strings.password,
@@ -31,7 +32,6 @@ class AddLunarTemplate(unittest.TestCase):
 
         util_no_driver = UtilNoDriver(self)
         self.driver = util_no_driver.make_driver(browser_type, url, "none")
-
 
         utilities = Utilities(self.driver)
         login_page = LoginPage(self.driver)

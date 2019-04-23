@@ -12,8 +12,8 @@ from selenium import webdriver
 class TestCaseTemplate(unittest.TestCase):
 
     # This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
-    # def setUp(self):
-    #    self.driver = webdriver
+    def setUp(self):
+        self.driver = webdriver.Chrome()
 
     # All tests must start with _test
     # url, user, pass must be included for login
