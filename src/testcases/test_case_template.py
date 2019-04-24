@@ -11,8 +11,12 @@ from selenium import webdriver
 
 class TestCaseTemplate(unittest.TestCase):
 
-    # This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
     def setUp(self):
+        """
+        This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
+        I don't think Lambda is aware of unit tests or test suites in general
+        Which will break pretty test result reporting in browserstack
+        """
         self.driver = webdriver.Chrome()
 
     # All tests must start with _test

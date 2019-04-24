@@ -78,7 +78,7 @@ class UtilNoDriver(BasePage):
 
         if "Chrome" in browser_type:
             desired_cap['pageLoadStrategy'] = page_load_strategy
-            if "localhost" or "lunar" in url:
+            if "localhost" in url:
                 self.driver = webdriver.Chrome(desired_capabilities=desired_cap)
                 self.driver.maximize_window()
                 time.sleep(10)
