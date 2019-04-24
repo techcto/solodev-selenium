@@ -21,14 +21,34 @@ from selenium.webdriver.support import expected_conditions as ec
 
 
 class AddLunarTemplate(unittest.TestCase):
-    
-    # This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
+
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        """
+        This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
+        I don't think Lambda is aware of unit tests or test suites in general
+        Which will break pretty test result reporting in browserstack
+        """
+        pass
+        # self.driver = webdriver.Chrome()
 
     def test_90second_website_launch(self, url=strings.localhost_solodev_url,
                                      username=strings.username, password=strings.password,
                                      website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+
+        """
+        The test case for the '90 second website launch'
+        (its really only this short on lite, its much longer on enterprise)
+        The parameters all have default values set in strings.py
+        (this could be an env file, but they would need to be parsed in the setup, and passed into this function
+        the current method is the more 'python' way to do it)
+
+        Args
+        :param    url: url to navigate to
+        :param    username: solodev username
+        :param    password: solodev password
+        :param    website_url: url to be the name of the site we are adding to the cms
+        :param    browser_type: the browser to run the test against (Chrome, Firefox, etc) (case sensitive)
+        """
 
         util_no_driver = UtilNoDriver(self)
         self.driver = util_no_driver.make_driver(browser_type, url, "none")
@@ -71,6 +91,29 @@ class AddLunarTemplate(unittest.TestCase):
         manage_website_page.click_next()
         utilities.wait_for_page_complete(self.driver)
 
+        """
+        Breaking convention to explain why everything below exists
+        Browserstack has a 90 second timeout, where if nothing interacts with the browser for 90 seconds, it times out.
+        On larger solodev deployments, it takes longer than 90 seconds for the lunar xl website to deploy. 
+        The problem is, selenium waits for the page to "complete" until executing the next command, and
+        the Solodev CMS streams logs to the page while deploying a site, so the page doesn't complete. We are stuck.
+        
+        To get around that, when we create the browser, we set the page_load_strategy to "none" in the desired 
+        capabilities, which mean selenium doesn't wait at all before the next command executes. 
+        (this is why every step has a wait after it)
+        Chrome and Firefox handle this differently (blame Google, their webdriver isn't up to spec)
+        The selenium 'wait.until(expected conditions)' is considered interacting with the browser so,
+        Firefox: 
+        We set a timeout to cause an exception, handle this exception, then we can interact with the browser. 
+        Browserstack considers checking for an elements existence as an interaction with the browser, so we just
+        keep checking for the existence of the next link we want to click, and it waits until the 
+        1200s wait timer is up.
+        Chrome:
+        Chrome doesn't timeout properly, and kills the browser, so we can't use the Firefox method (which is 'correct').
+        Instead, the page is considered 'interactive' while loading, before it reaches complete, we keep checking that
+        status, which browserstack also considers interacting with the browser, then just to be doubly sure, we 
+        also check for the existence of the next link we want to click, up to the same 1200s.
+        """
         wait = WebDriverWait(self.driver, 1200)
         if "Firefox" in browser_type:
             self.driver.set_page_load_timeout(10)
@@ -110,7 +153,13 @@ class AddLunarTemplate(unittest.TestCase):
         self.driver.quit()
 
     def tearDown(self):
-        self.driver.quit()
+        """
+        This is where driver.quit _should_ go, but because we didn't setup this way, we can't teardown this way
+        I don't think Lambda is aware of unit tests or test suites in general
+        Which will break pretty test result reporting in browserstack
+        """
+        pass
+        # self.driver.quit()
 
 
 def dispatch_key_event(driver, name, options={}):
@@ -122,6 +171,11 @@ def dispatch_key_event(driver, name, options={}):
 
 
 def hold_key(driver, duration):
+    """
+    Function to simulate scrolling down a page. We need to hold the key down inetad of use a scroll bar/wheel
+    :param driver: the webdriver
+    :param duration: how long to hold down the down key (yes, this only holds the down arrow)
+    """
     endtime = time.time() + duration
     options = {
         "type": "<TYPE>",
@@ -144,7 +198,11 @@ def hold_key(driver, duration):
 
 
 def click_element(driver, el):
-    """Helper function for simulating button clicks while the browser is busy."""
+    """
+    Helper function for simulating button clicks while the browser is busy.
+    The way we run in Browserstack, this isn't needed, but there might be situations where this is useful.
+    Maybe move to utilities?
+    """
     def func():
         actions = ActionChains(driver)
         actions.click(el)

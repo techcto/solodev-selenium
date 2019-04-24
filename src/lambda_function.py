@@ -117,6 +117,17 @@ def message_handler(message):
 
 
 def dispatcher(url, username, password, website_url):
+    """
+    The cloudformation handler reads in the environment variables from lambda, they are the
+    parameters for this function, and used when calling an individual test or a test suite
+    out['ADMIN_URL'], out['ADMIN_USERNAME'], out['ADMIN_PASSWORD'], out['WEBSITE_URL']
+
+    Args
+    :param    url: url to navigate to
+    :param    username: solodev username
+    :param    password: solodev password
+    :param    website_url: url to be the name of the site we are adding to the cms
+    """
     try:
         #unittest.TextTestRunner().run(
         #        unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,

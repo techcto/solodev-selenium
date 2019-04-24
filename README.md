@@ -46,17 +46,29 @@ Running the tests in the method described above relies on a check at the beginni
 and the data stored in strings.py for all the localhost information. These strings are passed in as default values which are
 overwritten when run as a lambda function. The webdriver is then built with whichever set of data is passed in. 
 
-## Running in AWS
+## Running in Browserstack
 
-Running in AWS can also been done 2 different ways. 
+Running in Browserstack against an AWS Cloudformation can also be done in a few different ways.
 
-* Placeholder for driving browserstack locally
-* Placeholder for driving browserstack from lambda function 
+* The first method is driven by your local machine. If you did the `make fetch-dependencies` above, then a simple `make run`
+will build the test suite and execute the lambda function. Currently, the tests that run when you do this are the ones called in the
+`try` statement of the `dispatcher` method in `lambda_function.py`. Eventually, entire test suites will be called, 
+and which test suite you want to run can be an environment variable. 
+
+* The second method is as the final step in the CI/CD pipeline when a new Solodev build happens. After builds are completed and deployed into
+AWS, this project is rebuilt, the lambda function is executed, and just as above, the tests that run when you do this are the ones called in the
+`try` statement of the `dispatcher` method in `lambda_function.py`. Eventually, entire test suites will be called, 
+and which test suite you want to run can be an environment variable.
+
+* Lastly, this repo is also configured to be built in AWS CodeBuild every time code is pushed to the master branch. When the build is complete
+ it's copied to an S3 bucket. This kicks off a test against a Solodev Lite Cloudformation instance.
+
 
 ## Building and uploading the distributable package
 
-Everything is summarized into a simple Makefile so use:
+This is done automatically in AWS Codebuild for Solodev, but if you would like to do it manually:
 
+* Everything is summarized into a simple Makefile
 * `make build-lambda-package`
 * Upload the `build.zip` resulting file to your AWS Lambda function
 * Set Lambda environment variables (same values as in docker-compose.yml)
