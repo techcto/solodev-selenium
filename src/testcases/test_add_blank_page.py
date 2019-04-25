@@ -16,6 +16,18 @@ class AddBlankPage(unittest.TestCase):
     def test_add_blank_page(self, url=strings.localhost_solodev_url, username=strings.username,
                             password=strings.password, browser_type=strings.default_browser_type,
                             website_url=strings.sanity_page_url):
+        """
+        This test adds a blank page to an existing website, either using the environment variable from the lambda
+        function, or the local info from strings.py
+
+        Args
+        :param    url: url to navigate to
+        :param    username: solodev username
+        :param    password: solodev password
+        :param    website_url: url to be the name of the site we are adding to the cms
+        :param    browser_type: the browser to run the test against (Chrome, Firefox, etc) (case sensitive)
+        """
+
 
         util_no_driver = UtilNoDriver(self)
         self.driver = util_no_driver.make_driver(browser_type, url)
@@ -46,12 +58,13 @@ class AddBlankPage(unittest.TestCase):
         websites_dev_page.expand_folder("www")
         websites_dev_page.click_folder("about")
 
-
+        # This test is incomplete
 
     def tearDown(self):
         self.driver.quit()
 
 
+# Required for unittest
 if __name__ == "__main__":
     unittest.main()
 

@@ -1,50 +1,57 @@
 import unittest
-import os
+
 import time
+
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+
+from src.pageobjects.websites_dev_page import WebsitesDevPage
+from selenium.webdriver.support import expected_conditions as ec
 from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
 from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
-from selenium import webdriver
+from src.helpers.utilities import UtilNoDriver
 
 
 class AddLunarTemplate(unittest.TestCase):
-    # url = ""
-    # username = ""
-    # password = ""
-    # website_url = ""
 
-    # def setUp(self):
-    #    self.driver = webdriver
+    def setUp(self):
+        """
+        This is where the driver setup _should_ go, but lambda/browserstack doesn't like it
+        I don't think Lambda is aware of unit tests or test suites in general
+        Which will break pretty test result reporting in browserstack
+        """
+        pass
+        # self.driver = webdriver.Chrome()
 
     def test_add_lunar(self, url=strings.localhost_solodev_url,
-                       username=strings.username, password=strings.password, website_url=strings.sanity_page_url):
-        desired_cap = {
-            'browser': 'Chrome',
-            'browser_version': '70.0',
-            'os': 'Windows',
-            'os_version': '10',
-            'resolution': '1920x1080',
-            'browserstack.debug': 'true',
-            'browserstack.console': 'verbose'
-        }
+                                     username=strings.username, password=strings.password,
+                                     website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+        """
+        This test is very similar to the 90second website launch, but doesn't navigate to lunar at the end,
+        it just ads the site then logs out. This is the test that should be used when stringing together
+        a bunch of tests into a suite
 
-        self.url = url
-        self.username = username
-        self.password = password
-        self.website_url = website_url
-        self.driver = webdriver
+        Args
+        :param    url: url to navigate to
+        :param    username: solodev username
+        :param    password: solodev password
+        :param    website_url: url to be the name of the site we are adding to the cms
+        :param    browser_type: the browser to run the test against (Chrome, Firefox, etc) (case sensitive)
+        """
 
-        if "localhost" in url:
-            self.driver = webdriver.Chrome()
-        else:
-            self.driver = webdriver.Remote(
-                command_executor=os.getenv("COMMAND_EXECUTOR"),
-                desired_capabilities=desired_cap)
+        util_no_driver = UtilNoDriver(self)
+        self.driver = util_no_driver.make_driver(browser_type, url, "none")
 
-        self.driver.maximize_window()
+        utilities = Utilities(self.driver)
+        login_page = LoginPage(self.driver)
+        home_page = HomePage(self.driver)
+        websites_page = WebsitePage(self.driver)
+        manage_website_page = ManageWebsitePage(self.driver)
 
         # Define webdriver wait and first page
         utilities = Utilities(self.driver)
@@ -52,38 +59,88 @@ class AddLunarTemplate(unittest.TestCase):
         home_page = HomePage(self.driver)
         websites_page = WebsitePage(self.driver)
         manage_website_page = ManageWebsitePage(self.driver)
+        # websites_dev_page = WebsitesDevPage(self.driver)
 
-        time.sleep(20)
-        self.driver.get(self.url)
+        self.driver.get(url)
+        utilities.wait_for_page_complete(self.driver)
 
         if "Solodev" not in self.driver.title:
             raise Exception("Unable to load Solodev!")
 
         # Login
-        login_page.type_login(self.username, self.password)
+        time.sleep(5)
+        login_page.type_login(username, password)
         login_page.click_login()
+        utilities.wait_for_page_complete(self.driver)
 
         # Create new website
         home_page.click_websites()
+        utilities.wait_for_page_complete(self.driver)
 
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Add Website")))
         websites_page.click_add_website()
-        manage_website_page.type_website_url(self.website_url)
+        utilities.wait_for_page_complete(self.driver)
+
+        wait.until(ec.visibility_of_element_located((By.CSS_SELECTOR, "#name")))
+        manage_website_page.type_website_url(website_url)
         manage_website_page.click_next()
+        utilities.wait_for_page_complete(self.driver)
 
         manage_website_page.click_lunar_xp()
+        utilities.wait_for_page_complete(self.driver)
         manage_website_page.click_next()
+        utilities.wait_for_page_complete(self.driver)
 
-        utilities.wait_for_page_complete(30)
+        """
+        Breaking convention to explain why everything below exists
+        Browserstack has a 90 second timeout, where if nothing interacts with the browser for 90 seconds, it times out.
+        On larger solodev deployments, it takes longer than 90 seconds for the lunar xl website to deploy. 
+        The problem is, selenium waits for the page to "complete" until executing the next command, and
+        the Solodev CMS streams logs to the page while deploying a site, so the page doesn't complete. We are stuck.
 
-        manage_website_page.click_next()
+        To get around that, when we create the browser, we set the page_load_strategy to "none" in the desired 
+        capabilities, which mean selenium doesn't wait at all before the next command executes. 
+        (this is why every step has a wait after it)
+        Chrome and Firefox handle this differently (blame Google, their webdriver isn't up to spec)
+        The selenium 'wait.until(expected conditions)' is considered interacting with the browser so,
+        Firefox: 
+        We set a timeout to cause an exception, handle this exception, then we can interact with the browser. 
+        Browserstack considers checking for an elements existence as an interaction with the browser, so we just
+        keep checking for the existence of the next link we want to click, and it waits until the 
+        1200s wait timer is up.
+        Chrome:
+        Chrome doesn't timeout properly, and kills the browser, so we can't use the Firefox method (which is 'correct').
+        Instead, the page is considered 'interactive' while loading, before it reaches complete, we keep checking that
+        status, which browserstack also considers interacting with the browser, then just to be doubly sure, we 
+        also check for the existence of the next link we want to click, up to the same 1200s.
+        """
+        wait = WebDriverWait(self.driver, 1200)
+        if "Firefox" in browser_type:
+            self.driver.set_page_load_timeout(10)
+            try:
+                manage_website_page.click_next()
+            except TimeoutException:
+                print('NOTE: at this point we can do other browser things to keep browserstack happy')
+                pass
+            wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
+        elif "Chrome" in browser_type:
+            manage_website_page.click_next()
+            utilities.wait_for_page_complete(self.driver, states=("interactive", "complete"))
+            print('NOTE: at this point we can do other browser things to keep browserstack happy')
+            wait.until(ec.element_to_be_clickable((By.LINK_TEXT, "Start Managing Your Website")))
 
-        utilities.wait_for_page_complete(120)
+        manage_website_page = ManageWebsitePage(self.driver)
+        manage_website_page.click_start_managing()
+        utilities.wait_for_page_complete(self.driver)
 
-        home_page = HomePage(self.driver)
-        home_page.click_websites()
-        websites_page.find_site_name(self.website_url)
+        websites_dev_page = WebsitesDevPage(self.driver)
+        websites_dev_page.expand_folder("www")
+        utilities.wait_for_page_complete(self.driver)
+        websites_dev_page.click_page("index.stml")
+        utilities.wait_for_page_complete(self.driver)
 
-        #self.driver.switch_to.default_content()
+        #there might need to be an extra step here, like clicking the site header/logo to go home
 
         home_page = HomePage(self.driver)
         utilities.wait_for_page_complete(1)
@@ -95,10 +152,13 @@ class AddLunarTemplate(unittest.TestCase):
         self.assertTrue(login_page.login_button_present())
         self.driver.quit()
 
-    # def tearDown(self):
-    #    self.driver.quit()
+    def tearDown(self):
+        # self.driver.quit()
+        pass
 
 
+# Required for unittest
 if __name__ == "__main__":
     unittest.main()
+
 

@@ -1,6 +1,5 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 
@@ -25,8 +24,14 @@ class ManageWebsitePage(BasePage):
     def click_permissions(self):
         self.driver.find_element_by_link_text("Permissions").click()
 
-    # Deleting the website is a 2 step process, type then click, so they are 2 steps here too
     def delete_site(self):
+        """
+        Deleting a website takes 2 steps, but they will almost always be done together
+        Step 1, type DELETE
+        Step 2, click delete button
+        :return:
+        """
+        # Maybe if there is a test that clicks delete without typing, then click delete can be spun off?
         delete_text_field = self.driver.find_element_by_css_selector("#confirm_delete")
         delete_button = self.driver.find_element_by_css_selector(".delete_website.btn.btn-scarlet")
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")

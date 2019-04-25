@@ -10,6 +10,9 @@ from selenium import webdriver
 
 
 class TestCaseTemplate(unittest.TestCase):
+    """
+    This template isn't designed to be run, but to serve as a template for developers to create additional tests
+    """
 
     def setUp(self):
         """
@@ -24,6 +27,15 @@ class TestCaseTemplate(unittest.TestCase):
     def test_case_template(self, url=strings.localhost_solodev_url,
                                      username=strings.username, password=strings.password,
                                      website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+        """
+        Args
+        :param    url: url to navigate to
+        :param    username: solodev username
+        :param    password: solodev password
+        :param    website_url: url to be the name of the site we are adding to the cms
+        :param    browser_type: the browser to run the test against (Chrome, Firefox, etc) (case sensitive)
+        """
+
         # We have to declare the driver first
         # It has to have browser type (firefox/chrome supported now)
         # the URL to know if we're running aginst local or aws
@@ -54,8 +66,15 @@ class TestCaseTemplate(unittest.TestCase):
         # But its unclear if browserstack obeys assert's properly
         # This assert example makes sure the element is present by checking a list of matching elements is > 0
         self.assertTrue(len(self.driver.find_elements_by_css_selector(".btn.btn-lg.btn-yellow")) > 0)
+
+        # this driver quit inside the test shouldn't be necessary once the
+        # browserstack / lambda function interaction is figured out
         self.driver.quit()
 
     # this should quit the driver properly after the assertion
     def tearDown(self):
         self.driver.quit()
+
+# Required for unittest
+if __name__ == "__main__":
+    unittest.main()

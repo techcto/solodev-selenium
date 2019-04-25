@@ -24,6 +24,16 @@ class BasePage(object):
 
 class Utilities(BasePage):
     def wait_for_page_complete(self, driver, states="complete", pending=None):
+        """
+        When using a page load strategy other than 'normal', we manually need to tell the test to wait
+        after each page event, so this method was created. It checks to see if the page status is
+        'complete' by default. See the use in the 90 second website launch test
+
+        :param driver: the webdriver
+        :param states: javascript page status: complete, loading, interactive, etc
+        :param pending: TODO
+        :return:
+        """
         print('> waiting...', end='', flush=True)
         while True:
             state = driver.execute_script('return document.readyState;')
@@ -40,6 +50,13 @@ class Utilities(BasePage):
         time.sleep(3)
 
     def wait_until_visible(self, driver, timeout, locator):
+        """
+        Wait until the item at locator is visible using wait.until presence of element
+        :param driver: webdriver
+        :param timeout: timeout in seconds to wait for locator
+        :param locator: type webelement
+        :return:
+        """
         wait = WebDriverWait(driver, timeout)
         wait.until(ec.presence_of_element_located(locator))
         return True
@@ -49,14 +66,20 @@ class Utilities(BasePage):
     # locater = xpath to element = "//td[contains(text(), 'some element text')]" for example
     def presence_of_elements_by_xpath(self, driver, locator):
         present = len(driver.find_elements_by_xpath(locator)) > 0
-        return present
+        if present > 0:
+            return True
+        else:
+            return False
 
     # returns true if there are elements that match the selector
     # returns false of there are no elements that match the selector
     # locater = xpath to element = '[aria-label="Log Out"]' for example
     def presence_of_elements_by_css_selector(self, driver, locator):
         present = len(driver.find_elements_by_css_selector(locator)) > 0
-        return present
+        if present > 0:
+            return True
+        else:
+            return False
 
 
 # page load strategy should be normal 99% of the time
@@ -65,9 +88,18 @@ class Utilities(BasePage):
 # every command that would change the page (clicking links, buttons, etc)
 class UtilNoDriver(BasePage):
     def make_driver(self, browser_type, url, page_load_strategy="normal"):
+        """
+        Because the capabilities the webdriver needs for development vs local vs browserstack differ so much
+        we need a function to handle this for us.
+
+        Args
+        :param browser_type: Chrome/Firefox/Edge/IE/Safari
+        :param url: the url to navigate to
+        :param page_load_strategy: defaults to normal, read more here
+        https://stackoverflow.com/questions/43734797/page-load-strategy-for-chrome-driver-updated-till-selenium-v3-12-0
+        :return:
+        """
         desired_cap = {
-            'browser': browser_type,
-            'browser_version': '66.0',
             'acceptSslCerts ': 'true',
             'os': 'Windows',
             'os_version': '10',
@@ -76,8 +108,12 @@ class UtilNoDriver(BasePage):
             'browserstack.selenium_version': '3.14.0'
         }
 
+        # For both browser types, the browser version is hard coded.
+        # Eventually this will need to be updated at the same time the webdriver is
         if "Chrome" in browser_type:
             desired_cap['pageLoadStrategy'] = page_load_strategy
+            desired_cap['browser'] = browser_type,
+            desired_cap['browser_version'] = '70.0',
             if "localhost" in url:
                 self.driver = webdriver.Chrome(desired_capabilities=desired_cap)
                 self.driver.maximize_window()
@@ -89,6 +125,9 @@ class UtilNoDriver(BasePage):
                 self.driver.fullscreen_window()
                 time.sleep(60)
         elif "Firefox" in browser_type:
+            desired_cap['pageLoadStrategy'] = page_load_strategy
+            desired_cap['browser'] = browser_type,
+            desired_cap['browser_version'] = '66.0',
             if "localhost" in url:
                 self.driver = webdriver.Firefox(desired_capabilities=desired_cap)
                 self.driver.maximize_window()

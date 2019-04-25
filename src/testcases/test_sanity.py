@@ -18,6 +18,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 
+"""
+This is a note for this test in general
+It does the same thing as 90 second website launch, but it deletes the site at the end
+A good sanity check to make sure a build is working, if no further testing is to be done
+It has all the logic for waiting for a site to load in browserstack
+Personally, I would run this on every build before any other tests - including adding a site to actually test against
+"""
+
 
 class SanityTest(unittest.TestCase):
 

@@ -1,10 +1,11 @@
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
+
 
 class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
+
 
 class WebsitePage(BasePage):
 

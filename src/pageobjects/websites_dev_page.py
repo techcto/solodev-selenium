@@ -1,6 +1,5 @@
 import time
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 
 
 class BasePage(object):
@@ -17,6 +16,11 @@ class WebsitesDevPage(BasePage):
         # return self.driver.find_element_by_xpath("//*[@id'dashboard-nav']/div/div/a/span").getText()
 
     def expand_folder(self, name):
+        """
+        For the left nav when developing a website, expanding a folder
+        :param name: string, name of the folder to expand
+        :return:
+        """
         nodes = self.driver.find_elements_by_class_name("tree-node")
 
         for i, n in enumerate(nodes, start=1):
@@ -25,6 +29,11 @@ class WebsitesDevPage(BasePage):
                 time.sleep(1)
 
     def click_page(self, name):
+        """
+        For the left nav when developing a website, clicking a specific page/file
+        :param name: string, page/file name, including extension if present
+        :return:
+        """
         nodes = self.driver.find_elements_by_class_name("tree-node")
 
         for i, n in enumerate(nodes, start=1):
@@ -33,6 +42,11 @@ class WebsitesDevPage(BasePage):
                 time.sleep(1)
 
     def click_folder(self, name):
+        """
+        For the left nav when developing a website, clicking a specific folder by name
+        :param name: string, name of the folder
+        :return:
+        """
         nodes = self.driver.find_elements_by_id("tree-node")
 
         for i, n in enumerate(nodes, start=1):

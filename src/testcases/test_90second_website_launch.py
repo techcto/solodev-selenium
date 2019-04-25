@@ -1,8 +1,6 @@
-import datetime
 import unittest
 import time
 import json
-import sys
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
@@ -14,7 +12,6 @@ from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
 from src.helpers.utilities import UtilNoDriver
 from src.pageobjects.websites_dev_page import WebsitesDevPage
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
@@ -210,6 +207,7 @@ def click_element(driver, el):
     return func
 
 
+# Required for unittest
 if __name__ == "__main__":
     unittest.main()
 

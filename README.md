@@ -19,17 +19,21 @@ Dependencies:
 * [Gecko driver](https://github.com/mozilla/geckodriver/releases) (Firefox)
 * [Small chromium binary](https://github.com/adieuadieu/serverless-chrome/releases)
 
-Install docker and dependencies:
+Install dependencies:
 
-* `make fetch-dependencies`
-* [Installing Docker](https://docs.docker.com/engine/installation/#get-started)
-* [Installing Docker compose](https://docs.docker.com/compose/install/#install-compose)
+* Via terminal `make fetch-dependencies`
+* PyCharm will prompt you to install dependencies when opening the project
 
 Set your PATH
 
 This project contains the windows exe's for chromedriver and geckodriver in the drivers/ folder, 
 add this folder to your path or download your own drivers separately and add them to your path independent of this project.
 If you are on Linux or Mac OS, this is the route you will have to take.
+
+IDE Note
+If you plan on using an IDE for developing tests, PyCharm is recommended, it is "more compatible" with the unittest
+framework. Even with the unittest plugin installed for Visual Studio Code, I ran into issues with it not running 
+one off tests properly during development. PyCharm recognizes them inherently, and works out of the box.
 
 ## Working locally
 

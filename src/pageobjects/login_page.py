@@ -8,6 +8,12 @@ class BasePage(object):
 class LoginPage(BasePage):
 
     def type_login(self, username, password):
+        """
+        solodev cms login page
+        :param username: string containing email address
+        :param password: string containing password
+        :return:
+        """
         self.driver.find_element_by_name("email").send_keys(username)
         self.driver.find_element_by_name("password").send_keys(password)
 

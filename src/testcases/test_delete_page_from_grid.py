@@ -16,6 +16,18 @@ class DeletePageFromGrid(unittest.TestCase):
     def test_delete_page_from_grid(self, url=strings.localhost_solodev_url, username=strings.username,
                             password=strings.password, browser_type=strings.default_browser_type,
                             website_url=strings.sanity_page_url):
+
+        """
+        This test navigates to a folder and deletes a page from the grid, using the checkbox and the delete button
+
+        Args
+        :param    url: url to navigate to
+        :param    username: solodev username
+        :param    password: solodev password
+        :param    website_url: url to be the name of the site we are adding to the cms
+        :param    browser_type: the browser to run the test against (Chrome, Firefox, etc) (case sensitive)
+        """
+
         util_no_driver = UtilNoDriver(self)
         self.driver = util_no_driver.make_driver(browser_type, url)
 
@@ -53,13 +65,13 @@ class DeletePageFromGrid(unittest.TestCase):
 
         self.driver.find_element_by_css_selector('data-name="Add Page"').click()
 
-
-
+        # This test is incomplete
 
     def tearDown(self):
         self.driver.quit()
 
 
+# Required for unittest
 if __name__ == "__main__":
     unittest.main()
 
