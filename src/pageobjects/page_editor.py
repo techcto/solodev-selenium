@@ -45,3 +45,12 @@ class PageEditor(BasePage):
     def click_draft(self):
         delete = self.driver.find_element_by_css_selector("[iconcls='fas fa-save']")
         delete.click()
+
+    def click_submit_action_modal(self):
+        self.driver.find_element_by_css_selector(
+            "#actionModalForm > div > .modal-content > div > .btn.btn-color1.btn-lg.modal-confirm").click()
+
+    def click_cancel_action_modal(self):
+        self.driver.find_element_by_css_selector(
+            "#actionModalForm > div > .modal-content > div > .modal-dismiss.backButton").click()
+

@@ -70,11 +70,12 @@ class DeletePageFromEditor(unittest.TestCase):
 
         self.driver.switch_to.parent_frame()
 
-        # action_modal = self.driver.find_element_by_css_selector("#actionModal")
-        self.driver.find_element_by_css_selector(
-            "#actionModalForm > div > .modal-content > div > .btn.btn-color1.btn-lg.modal-confirm").click()
+        page_editor.click_submit_action_modal()
 
-        # This test is incomplete
+        # This test stops after clicking submit, which some might consider incomplete.
+        # A conversation probably needs to happen about the best state to close the browser in
+        # eg log out, go to home page, go to website, close after last action
+        # what should be asserted at the end of the test?
 
     def tearDown(self):
         self.driver.quit()
