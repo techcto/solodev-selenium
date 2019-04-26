@@ -59,6 +59,8 @@ class AddBlankPage(unittest.TestCase):
         websites_dev_page.click_folder("about")
 
         # This test is incomplete
+        # TODO this test should add the page 0-delete.stml mentioned in the delete page tests
+        # TODO this test should then be run before each of the delete tests
 
     def tearDown(self):
         self.driver.quit()

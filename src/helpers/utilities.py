@@ -81,6 +81,9 @@ class Utilities(BasePage):
         else:
             return False
 
+    def switch_iframe(self, iframe):
+        self.driver.switch_to.frame(iframe)
+
 
 # page load strategy should be normal 99% of the time
 # the only time it shouldnt is when chrome needs to load a long page and we need to trick browserstack

@@ -57,13 +57,12 @@ class DeletePageFromGrid(unittest.TestCase):
         websites_dev_page.expand_folder("www")
         websites_dev_page.click_folder("www")
 
-        iframe_A = self.driver.find_element_by_css_selector("#multitabs_info_2")
-        self.driver.switch_to.frame(iframe_A)
+        iframe = self.driver.find_element_by_css_selector("#multitabs_info_2")
+        utilities.switch_iframe(iframe)
 
         # TODO Add page named 0-delete.stml so we always know the file name
         # TODO And it'll always be at the top of the list
-
-        self.driver.find_element_by_css_selector('data-name="Add Page"').click()
+        # TODO This is a separate test
 
         # This test is incomplete
 

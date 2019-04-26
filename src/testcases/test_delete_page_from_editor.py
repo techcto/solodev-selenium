@@ -4,6 +4,7 @@ from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
 from src.pageobjects.websites_dev_page import WebsitesDevPage
+from src.pageobjects.page_editor import PageEditor
 from src.helpers.utilities import Utilities, UtilNoDriver
 from selenium import webdriver
 
@@ -38,6 +39,7 @@ class DeletePageFromEditor(unittest.TestCase):
         home_page = HomePage(self.driver)
         websites_page = WebsitePage(self.driver)
         websites_dev_page = WebsitesDevPage(self.driver)
+        page_editor = PageEditor(self.driver)
 
         # Go to the login page
         self.driver.get(url)
@@ -61,11 +63,10 @@ class DeletePageFromEditor(unittest.TestCase):
         websites_dev_page.click_page("404.stml")
 
         # delete page clicked above
-        iframe_A = self.driver.find_element_by_css_selector("#multitabs_info_2")
-        self.driver.switch_to.frame(iframe_A)
+        iframe = self.driver.find_element_by_css_selector("#multitabs_info_2")
+        utilities.switch_iframe(iframe)
 
-        delete = self.driver.find_element_by_css_selector("[iconcls='fas fa-trash']")
-        delete.click()
+        page_editor.click_delete()
 
         self.driver.switch_to.parent_frame()
 
