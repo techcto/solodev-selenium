@@ -129,8 +129,25 @@ def dispatcher(url, username, password, website_url):
         #unittest.TextTestRunner().run(
         #        unittest.TestLoader().loadTestsFromTestCase(add_lunar_template.test_add_lunar(url, username,
         #                                                                                       password, website_url)))
-        unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase
-                                      (add_lunar_template.test_add_lunar(url, username, password, website_url, "Chrome")))
+
+        # unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase
+        #                              (add_lunar_template.test_add_lunar(url, username, password, website_url, "Chrome")))
+
+        # HACK: these must be set but this is bad practice (mutating global vars)
+        test_add_lunar.AddLunarTemplate.g_url = url
+        test_add_lunar.AddLunarTemplate.g_username = username
+        test_add_lunar.AddLunarTemplate.g_password = password
+        test_add_lunar.AddLunarTemplate.g_website_url = website_url
+        test_add_lunar.AddLunarTemplate.g_browser_type = "Chrome"
+
+        print("executing test runner:")
+        print(f" - url: {test_add_lunar.AddLunarTemplate.g_url}")
+        print(f" - username: {test_add_lunar.AddLunarTemplate.g_username}")
+        print(f" - password: {test_add_lunar.AddLunarTemplate.g_password}")
+        print(f" - website_url: {test_add_lunar.AddLunarTemplate.g_website_url}")
+        print(f" - browser_type: {test_add_lunar.AddLunarTemplate.g_browser_type}")
+        unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(test_add_lunar.AddLunarTemplate))
+
         print("Scobot says: That does it. See you next time.")
     except BaseException as e:
         print(str(e))

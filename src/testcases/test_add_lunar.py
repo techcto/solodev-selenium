@@ -15,8 +15,12 @@ from src.pageobjects.manage_website_page import ManageWebsitePage
 from src.helpers.utilities import Utilities
 from src.helpers.utilities import UtilNoDriver
 
-
 class AddLunarTemplate(unittest.TestCase):
+    g_url = None
+    g_username = None
+    g_password = None
+    g_website_url = None
+    g_browser_type = None
 
     def setUp(self):
         """
@@ -27,7 +31,22 @@ class AddLunarTemplate(unittest.TestCase):
         pass
         # self.driver = webdriver.Chrome()
 
-    def test_add_lunar(self, url, username, password, website_url, browser_type):
+    def test_add_lunar(self, url = None, username = None, password = None, website_url = None, browser_type = None):
+        # NOTE: test cases that are executed by the unittest runner don't have parameters passed to their
+        # test methods and shouldn't be called directly.
+
+        # Because this thing was built in this odd way we are working around it by having the 
+        # lambda function set the class vars (g_url, g_username, etc) so that when the runner
+        # executes this (with all None parameters) we will apply the class vars.
+
+        # This is a HACK and we need to redo this whole thing.
+        
+        url = url if url is not None else AddLunarTemplate.g_url
+        username = username if username is not None else AddLunarTemplate.g_username
+        password = password if password is not None else AddLunarTemplate.g_password
+        website_url = website_url if website_url is not None else AddLunarTemplate.g_website_url
+        browser_type = browser_type if browser_type is not None else AddLunarTemplate.g_browser_type
+
         """
         This test is very similar to the 90second website launch, but doesn't navigate to lunar at the end,
         it just ads the site then logs out. This is the test that should be used when stringing together
