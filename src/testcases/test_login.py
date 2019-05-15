@@ -1,7 +1,6 @@
 import unittest
 
 from src.helpers.utilities import UtilNoDriver
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from selenium import webdriver
@@ -12,8 +11,7 @@ class LoginTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_login(self, url=strings.localhost_solodev_url, username=strings.username,
-                   password=strings.password, browser_type=strings.default_browser_type):
+    def test_login(self, url, username, password, browser_type):
         """
         A simple login test
 

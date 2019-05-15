@@ -4,7 +4,6 @@ import json
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -28,17 +27,9 @@ class AddLunarTemplate(unittest.TestCase):
         pass
         # self.driver = webdriver.Chrome()
 
-    def test_90second_website_launch(self, url=strings.localhost_solodev_url,
-                                     username=strings.username, password=strings.password,
-                                     website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+    def test_90second_website_launch(self, url, username, password, website_url, browser_type):
 
         """
-        The test case for the '90 second website launch'
-        (its really only this short on lite, its much longer on enterprise)
-        The parameters all have default values set in strings.py
-        (this could be an env file, but they would need to be parsed in the setup, and passed into this function
-        the current method is the more 'python' way to do it)
-
         Args
         :param    url: url to navigate to
         :param    username: solodev username

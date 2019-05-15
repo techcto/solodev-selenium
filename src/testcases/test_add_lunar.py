@@ -8,7 +8,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from src.pageobjects.websites_dev_page import WebsitesDevPage
 from selenium.webdriver.support import expected_conditions as ec
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -28,9 +27,7 @@ class AddLunarTemplate(unittest.TestCase):
         pass
         # self.driver = webdriver.Chrome()
 
-    def test_add_lunar(self, url=strings.localhost_solodev_url,
-                                     username=strings.username, password=strings.password,
-                                     website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+    def test_add_lunar(self, url, username, password, website_url, browser_type):
         """
         This test is very similar to the 90second website launch, but doesn't navigate to lunar at the end,
         it just ads the site then logs out. This is the test that should be used when stringing together
@@ -141,11 +138,10 @@ class AddLunarTemplate(unittest.TestCase):
         utilities.wait_for_page_complete(self.driver)
 
         #there might need to be an extra step here, like clicking the site header/logo to go home
-
         home_page = HomePage(self.driver)
-        utilities.wait_for_page_complete(1)
+        utilities.wait_for_page_complete(self.driver)
         home_page.click_profile()
-        utilities.wait_for_page_complete(1)
+        utilities.wait_for_page_complete(self.driver)
         home_page.click_logout()
 
         # Assert we're back on login page

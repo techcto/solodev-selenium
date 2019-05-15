@@ -1,5 +1,4 @@
 import unittest
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -24,9 +23,7 @@ class TestCaseTemplate(unittest.TestCase):
 
     # All tests must start with _test
     # url, user, pass must be included for login
-    def test_case_template(self, url=strings.localhost_solodev_url,
-                                     username=strings.username, password=strings.password,
-                                     website_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+    def test_case_template(self, url, username, password, website_url, browser_type):
         """
         Args
         :param    url: url to navigate to

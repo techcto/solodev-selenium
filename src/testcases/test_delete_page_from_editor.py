@@ -1,5 +1,4 @@
 import unittest
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -14,9 +13,7 @@ class DeletePageFromEditor(unittest.TestCase):
     #    self.driver = webdriver.Chrome()
     #    self.driver.maximize_window()
 
-    def test_delete_page_from_editor(self, url=strings.localhost_solodev_url, username=strings.username,
-                            password=strings.password, browser_type=strings.default_browser_type,
-                            website_url=strings.sanity_page_url):
+    def test_delete_page_from_editor(self, url, username, password, browser_type, website_url):
 
         """
         This delete test navigates to the page editor, and clicks the delete icon on the top of the page

@@ -6,7 +6,6 @@ import sys
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -33,9 +32,7 @@ class SanityTest(unittest.TestCase):
     #    self.driver = webdriver.Chrome()
     #    self.driver.maximize_window()
 
-    def test_sanity(self, url=strings.localhost_solodev_url,
-                    username=strings.username, password=strings.password,
-                    new_page_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+    def test_sanity(self, url, username, password, new_page_url, browser_type):
 
         util_no_driver = UtilNoDriver(self)
         self.driver = util_no_driver.make_driver(browser_type, url, "none")
@@ -122,7 +119,7 @@ class SanityTest(unittest.TestCase):
 
         # Todo check if website name is anywhere on the page. if not, continue, if so, fail
         if utilities.presence_of_elements_by_xpath(self.driver, "//td[contains(text(), '"
-                                                                + strings.sanity_page_url + "')]"):
+                                                                + new_page_url + "')]"):
             self.assertTrue(False)
 
         # Log out

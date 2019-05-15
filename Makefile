@@ -3,7 +3,8 @@ clean:
 	rm -rf __pycache__
 
 fetch:
-	mkdir -p bin/
+	rm -Rf bin/*
+	mkdir bin
 
 	# Get chromedriver
 	curl -SL https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip > drivers/chromedriver.zip

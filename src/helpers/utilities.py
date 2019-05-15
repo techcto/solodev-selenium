@@ -111,12 +111,14 @@ class UtilNoDriver(BasePage):
             'browserstack.selenium_version': '3.14.0'
         }
 
+        print("Browser Type is: "+browser_type)
+
         # For both browser types, the browser version is hard coded.
         # Eventually this will need to be updated at the same time the webdriver is
         if "Chrome" in browser_type:
             desired_cap['pageLoadStrategy'] = page_load_strategy
-            desired_cap['browser'] = browser_type,
-            desired_cap['browser_version'] = '70.0',
+            desired_cap['browser'] = browser_type
+            desired_cap['browser_version'] = '70.0'
             if "localhost" in url:
                 self.driver = webdriver.Chrome(desired_capabilities=desired_cap)
                 self.driver.maximize_window()
@@ -129,8 +131,8 @@ class UtilNoDriver(BasePage):
                 time.sleep(60)
         elif "Firefox" in browser_type:
             desired_cap['pageLoadStrategy'] = page_load_strategy
-            desired_cap['browser'] = browser_type,
-            desired_cap['browser_version'] = '66.0',
+            desired_cap['browser'] = browser_type
+            desired_cap['browser_version'] = '66.0'
             if "localhost" in url:
                 self.driver = webdriver.Firefox(desired_capabilities=desired_cap)
                 self.driver.maximize_window()

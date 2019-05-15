@@ -6,7 +6,6 @@ import sys
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
-from src.values import strings
 from src.pageobjects.login_page import LoginPage
 from src.pageobjects.home_page import HomePage
 from src.pageobjects.websites_page import WebsitePage
@@ -24,9 +23,7 @@ class AddBlankWebsite(unittest.TestCase):
     #    self.driver = webdriver.Chrome()
     #    self.driver.maximize_window()
 
-    def test_add_blank_website(self, url=strings.localhost_solodev_url,
-                    username=strings.username, password=strings.password,
-                    new_page_url=strings.sanity_page_url, browser_type=strings.default_browser_type):
+    def test_add_blank_website(self, url, username, password, new_page_url, browser_type):
         """
         This test adds a blank website, selecting no template when the deployment gets to that step
 
@@ -100,7 +97,7 @@ class AddBlankWebsite(unittest.TestCase):
 
         # Todo check if website name is anywhere on the page. if not, continue, if so, fail
         if utilities.presence_of_elements_by_xpath(self.driver, "//td[contains(text(), '"
-                                                                + strings.sanity_page_url + "')]"):
+                                                                + new_page_url + "')]"):
             self.assertTrue(False)
 
         # Log out
